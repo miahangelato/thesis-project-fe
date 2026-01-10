@@ -2,7 +2,9 @@
  * Scanner Client - Interface to the Edge Node Digital Persona Scanner
  */
 
-const SCANNER_BASE_URL = "http://localhost:5000/api/scanner";
+const SCANNER_BASE_URL = process.env.NEXT_PUBLIC_SCANNER_URL
+  ? `${process.env.NEXT_PUBLIC_SCANNER_URL}/api/scanner`
+  : "http://localhost:5000/api/scanner";
 const API_KEY = process.env.NEXT_PUBLIC_KIOSK_API_KEY || "";
 
 export interface ScannerStatus {
@@ -35,6 +37,7 @@ export async function checkScannerStatus(): Promise<ScannerStatus> {
       headers: {
         "Content-Type": "application/json",
         "X-API-Key": API_KEY,
+        "ngrok-skip-browser-warning": "true", // Bypass ngrok warning page
       },
     });
 
@@ -64,6 +67,7 @@ export async function captureFinger(fingerName: string): Promise<ScanResult> {
       headers: {
         "Content-Type": "application/json",
         "X-API-Key": API_KEY,
+        "ngrok-skip-browser-warning": "true", // Bypass ngrok warning page
       },
       body: JSON.stringify({
         finger_name: fingerName,
