@@ -6,13 +6,13 @@ interface ScannerStatus {
   scan_id: string | null;
   finger_name: string | null;
   status:
-    | "idle"
-    | "waiting"
-    | "detecting"
-    | "capturing"
-    | "success"
-    | "error"
-    | "cancelled";
+  | "idle"
+  | "waiting"
+  | "detecting"
+  | "capturing"
+  | "success"
+  | "error"
+  | "cancelled";
   hint: string;
   metrics: {
     coverage?: number;
@@ -55,7 +55,7 @@ interface SessionComplete {
   total_expected: number;
 }
 
-const SCANNER_URL = process.env.NEXT_PUBLIC_SCANNER_BASE_URL || "http://localhost:5000";
+const SCANNER_URL = process.env.NEXT_PUBLIC_SCANNER_URL || "http://localhost:5000";
 
 export function useScannerSocket() {
   const [socket, setSocket] = useState<Socket | null>(null);
