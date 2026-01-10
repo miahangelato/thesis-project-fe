@@ -14,7 +14,7 @@ interface FingerprintScannerProps {
 }
 
 const SCANNER_BASE_URL =
-  process.env.NEXT_PUBLIC_SCANNER_BASE_URL || "http://localhost:5000";
+  process.env.NEXT_PUBLIC_SCANNER_URL || "http://localhost:5000";
 
 export default function FingerprintScanner({
   onScanComplete,
