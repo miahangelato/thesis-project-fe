@@ -108,11 +108,13 @@ export default function ScanPage() {
       console.log("Analysis API response:", analyzeResponse);
       console.log("Analysis completed successfully");
 
-      // Call /results endpoint to save to database
+      // Call /results endpoint to save to database AND get QR code URLs
       console.log("💾 Calling /results to save to database...");
+      let finalData = analyzeResponse.data; // Fallback
       try {
         const resultsResponse = await sessionAPI.getResults(activeSessionId);
         console.log("✅ Database save result:", resultsResponse.data?.saved_to_database);
+        finalData = resultsResponse.data; // Use results response (includes QR URLs!)
       } catch (resultsError) {
         console.error("⚠️ Failed to save to database:", resultsError);
         // Continue anyway - user can still see results
@@ -120,7 +122,7 @@ export default function ScanPage() {
 
       // Store results in sessionStorage for the results page
       const resultsData = {
-        data: analyzeResponse.data,
+        data: finalData, // Now includes qr_code_url and download_url!
         expiry: Date.now() + 3600000, // 1 hour expiry
       };
       // Encode with UTF-8 safe base64 to handle emoji/unicode in AI text
