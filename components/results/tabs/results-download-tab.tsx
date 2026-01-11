@@ -1,124 +1,73 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Download, FileText, Info, QrCode, Smartphone } from "lucide-react";
-import { QRCodeSVG } from "qrcode.react";
+import React from "react";
+import { QrCode, Smartphone, Info } from "lucide-react";
+import Image from "next/image";
 
 export function ResultsDownloadTab({
-  pdfUrl,
-  pdfLoading,
-  pdfError,
-  onGeneratePDF,
-  onDirectDownload,
-  onReset,
+  qrCodeUrl,
+  downloadUrl,
 }: {
-  pdfUrl: string | null;
-  pdfLoading: boolean;
-  pdfError: string | null;
-  onGeneratePDF: () => void;
-  onDirectDownload: () => void;
-  onReset: () => void;
+  qrCodeUrl?: string;
+  downloadUrl?: string;
 }) {
-  const [qrValue, setQrValue] = useState<string>("");
-
-  useEffect(() => {
-    if (!pdfUrl) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setQrValue("");
-      return;
-    }
-
-    const origin = window.location.origin;
-    const session = window.sessionStorage.getItem("current_session_id") || "";
-    const url = session
-      ? `${origin}/download?session=${encodeURIComponent(session)}`
-      : `${origin}/download`;
-    setQrValue(url);
-  }, [pdfUrl]);
+  // If no QR code URL yet, show loading
+  if (!qrCodeUrl || !downloadUrl) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12">
+        <div className="animate-spin h-12 w-12 border-4 border-teal-500 border-t-transparent rounded-full mb-4" />
+        <p className="text-gray-600">Generating your report...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Download Your Results</h2>
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold text-gray-800">📄 Download Your Report</h2>
 
-      {!pdfUrl ? (
-        <div className="flex flex-col items-center justify-center py-8">
-          <FileText className="w-16 h-16 text-teal-600 mb-4" />
-          <p className="text-gray-700 mb-4 font-medium">Generate your PDF report</p>
-          <Button
-            onClick={onGeneratePDF}
-            disabled={pdfLoading}
-            className="bg-linear-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-bold py-3 px-8 rounded-xl cursor-pointer"
-          >
-            {pdfLoading ? (
-              <>
-                <span className="animate-spin h-5 w-5 mr-2 border-2 border-white border-t-transparent rounded-full inline-block" />
-                Generating...
-              </>
-            ) : (
-              <>
-                <FileText className="w-5 h-5 mr-2 inline" />
-                Generate PDF Report
-              </>
-            )}
-          </Button>
-          {pdfError && <p className="text-red-600 text-sm mt-3">{pdfError}</p>}
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {/* QR Code Section */}
-          <div className="bg-gray-100 rounded-lg p-6">
-            <div className="flex flex-col items-center space-y-4">
-              <div className="flex items-center gap-2 text-lg font-semibold text-gray-800">
-                <QrCode className="h-6 w-6" />
-                Scan to Download
-              </div>
+      {/* QR Code Card */}
+      <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl p-8 border-2 border-teal-200">
+        <div className="flex flex-col items-center space-y-6">
+          {/* Header */}
+          <div className="flex items-center gap-3 text-2xl font-bold text-gray-800">
+            <QrCode className="h-8 w-8 text-teal-600" />
+            Scan to Download
+          </div>
 
-              <div className="bg-white p-4 rounded-lg shadow-inner">
-                <QRCodeSVG
-                  value={qrValue || pdfUrl}
-                  size={200}
-                  level="M"
-                  includeMargin={true}
-                />
-              </div>
+          {/* QR Code Image */}
+          <div className="bg-white p-6 rounded-2xl shadow-lg border-4 border-white">
+            <Image
+              src={qrCodeUrl}
+              alt="Download QR Code"
+              width={256}
+              height={256}
+              className="rounded-lg"
+              unoptimized
+            />
+          </div>
 
-              <div className="flex items-start gap-2 text-sm text-gray-600 max-w-sm text-center">
-                <Smartphone className="h-4 w-4 mt-0.5 shrink-0" />
-                <p>
-                  Scan this QR code with your smartphone to download the PDF report
-                  directly
-                </p>
-              </div>
+          {/* Instructions */}
+          <div className="flex items-start gap-3 text-lg text-gray-700 max-w-md text-center bg-white p-4 rounded-xl border border-teal-200">
+            <Smartphone className="h-6 w-6 mt-1 shrink-0 text-teal-600" />
+            <div>
+              <p className="font-semibold mb-1">📱 Open your phone camera</p>
+              <p className="text-base text-gray-600">
+                Point it at this QR code and your PDF report will download automatically
+              </p>
             </div>
           </div>
 
-          {/* Direct Download Section */}
-          <div className="space-y-3">
-            <div className="text-center text-sm text-gray-600">Or download directly</div>
-
-            <Button
-              onClick={onDirectDownload}
-              className="w-full bg-linear-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-bold py-3 rounded-xl cursor-pointer"
-            >
-              <Download className="w-5 h-5 mr-2 inline" />
-              Download PDF Report
-            </Button>
+          {/* Privacy Notice */}
+          <div className="text-sm text-gray-600 text-center max-w-lg">
+            <p>✅ Your report is ready and will download to your phone for safekeeping</p>
           </div>
-
-          {/* Reset Button */}
-          <button
-            onClick={onReset}
-            className="w-full text-teal-600 hover:text-teal-700 font-medium text-sm py-2"
-          >
-            Generate Another Report
-          </button>
         </div>
-      )}
+      </div>
 
-      <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
+      {/* Important Notice */}
+      <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5">
         <p className="text-sm text-blue-800 flex items-start">
-          <Info className="w-5 h-5 mr-2 mt-0.5 shrink-0" />
+          <Info className="w-5 h-5 mr-3 mt-0.5 shrink-0" />
           <span>
             <strong>Important:</strong> This report is for informational purposes only and
             should not replace professional medical advice. Please consult with a

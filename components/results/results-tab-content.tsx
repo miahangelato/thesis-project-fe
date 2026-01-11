@@ -12,22 +12,10 @@ export function ResultsTabContent({
   activeTab,
   participantData,
   canShowBloodTab,
-  pdfUrl,
-  pdfLoading,
-  pdfError,
-  onGeneratePDF,
-  onDirectDownload,
-  onResetPDF,
 }: {
   activeTab: TabType;
   participantData: ResultsParticipantData;
   canShowBloodTab: boolean;
-  pdfUrl: string | null;
-  pdfLoading: boolean;
-  pdfError: string | null;
-  onGeneratePDF: () => void;
-  onDirectDownload: () => void;
-  onResetPDF: () => void;
 }) {
   const contentClassName =
     activeTab === "analysis"
@@ -57,12 +45,8 @@ export function ResultsTabContent({
 
         {activeTab === "download" && (
           <ResultsDownloadTab
-            pdfUrl={pdfUrl}
-            pdfLoading={pdfLoading}
-            pdfError={pdfError}
-            onGeneratePDF={onGeneratePDF}
-            onDirectDownload={onDirectDownload}
-            onReset={onResetPDF}
+            qrCodeUrl={participantData.qr_code_url}
+            downloadUrl={participantData.download_url}
           />
         )}
       </div>

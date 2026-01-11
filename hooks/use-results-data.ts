@@ -207,6 +207,9 @@ export function useResultsData(sessionId: string | null) {
             nearby_facilities: nearbyFacilities,
             pattern_counts: patternCounts,
             bmi: typeof dataObj.bmi === "number" ? dataObj.bmi : 0,
+            // QR Code & PDF Download
+            qr_code_url: typeof dataObj.qr_code_url === "string" ? dataObj.qr_code_url : undefined,
+            download_url: typeof dataObj.download_url === "string" ? dataObj.download_url : undefined,
           });
 
           console.log("✅ State updated successfully");

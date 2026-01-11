@@ -38,4 +38,7 @@ export interface ResultsParticipantData {
   nearby_facilities: MapPlace[];
   pattern_counts: Record<string, unknown>;
   bmi: number;
+  // QR Code & PDF Download
+  qr_code_url?: string;
+  download_url?: string;
 }
