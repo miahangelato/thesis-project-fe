@@ -49,16 +49,15 @@ export function DownloadPageContent() {
       // ignore
     }
 
-    setQrValue(
-      `${window.location.origin}/download?session=${encodeURIComponent(activeSessionId)}`
-    );
-
     const generatePDF = async () => {
       try {
         setLoading(true);
         const response = await sessionAPI.generatePDF(activeSessionId);
         setPdfUrl(response.data.pdf_url);
         setDownloadUrl(response.data.download_url || response.data.pdf_url);
+        
+        // Option 1: QR code points directly to Supabase PDF URL for instant download
+        setQrValue(response.data.pdf_url);
       } catch (err: unknown) {
         console.error("Failed to generate PDF:", err);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
