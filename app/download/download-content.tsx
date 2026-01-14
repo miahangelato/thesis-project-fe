@@ -53,11 +53,22 @@ export function DownloadPageContent() {
       try {
         setLoading(true);
         const response = await sessionAPI.generatePDF(activeSessionId);
+        
+        console.log('PDF Response:', response.data);
+        
         setPdfUrl(response.data.pdf_url);
         setDownloadUrl(response.data.download_url || response.data.pdf_url);
         
         // Option 1: QR code points directly to Supabase PDF URL for instant download
-        setQrValue(response.data.pdf_url);
+        const pdfUrlForQr = response.data.pdf_url;
+        
+        if (pdfUrlForQr) {
+          console.log('Setting QR value to:', pdfUrlForQr);
+          setQrValue(pdfUrlForQr);
+        } else {
+          console.error('No PDF URL received from server');
+          setError('PDF URL not received from server');
+        }
       } catch (err: unknown) {
         console.error("Failed to generate PDF:", err);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -148,14 +159,18 @@ export function DownloadPageContent() {
                 Scan to Download
               </div>
 
-              {(downloadUrl || pdfUrl) && (
+              {(pdfUrl || downloadUrl) && qrValue ? (
                 <div className="bg-white p-6 rounded-lg shadow-inner">
                   <QRCodeSVG
-                    value={qrValue || downloadUrl || pdfUrl || ""}
+                    value={qrValue}
                     size={256}
                     level="M"
                     includeMargin={true}
                   />
+                </div>
+              ) : (
+                <div className="bg-white p-6 rounded-lg shadow-inner flex items-center justify-center" style={{ width: '280px', height: '280px' }}>
+                  <p className="text-sm text-muted-foreground">Generating QR code...</p>
                 </div>
               )}
 
