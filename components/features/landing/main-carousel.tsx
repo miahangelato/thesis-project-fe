@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
 
+import { useState, useEffect } from "react";
 import { landingCarouselSlides } from "@/data/landing-content";
 
 import Image from "next/image";
@@ -23,6 +23,7 @@ export function MainCarousel({
 }: MainCarouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [swipeStart, setSwipeStart] = useState<number | null>(null);
 
   const totalSlides = landingCarouselSlides.length;
 
@@ -51,12 +52,7 @@ export function MainCarousel({
   };
 
   const slide = landingCarouselSlides[currentSlide];
-
-  const [swipeStart, setSwipeStart] = useState<number | null>(null);
-
   if (!slide) return null;
-
-  const Icon = slide.icon;
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -75,14 +71,14 @@ export function MainCarousel({
     }),
   };
 
-  // Separate variants: text slides, images crossfade (no horizontal motion)
   const textVariants = slideVariants;
 
-  const imageVariants = {
-    enter: { opacity: 0, scale: 0.995 },
-    center: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.995 },
-  };
+  const staticImages = landingCarouselSlides.slice(0, 3);
+
+  const cardShadow =
+    "0 15px 35px rgba(0, 194, 203, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05)";
+  const mainShadow =
+    "0 20px 40px rgba(0, 194, 203, 0.20), 0 8px 20px rgba(0, 0, 0, 0.06)";
 
   return (
     <div className="flex flex-col w-full">
@@ -93,11 +89,7 @@ export function MainCarousel({
           if (swipeStart !== null) {
             const diffX = e.clientX - swipeStart;
             if (Math.abs(diffX) > 100) {
-              if (diffX > 0) {
-                prevSlide();
-              } else {
-                nextSlide();
-              }
+              diffX > 0 ? prevSlide() : nextSlide();
             }
             setSwipeStart(null);
           }
@@ -107,16 +99,13 @@ export function MainCarousel({
           if (swipeStart !== null) {
             const diffX = e.changedTouches[0].clientX - swipeStart;
             if (Math.abs(diffX) > 100) {
-              if (diffX > 0) {
-                prevSlide();
-              } else {
-                nextSlide();
-              }
+              diffX > 0 ? prevSlide() : nextSlide();
             }
             setSwipeStart(null);
           }
         }}
       >
+        {/* LEFT: text (unchanged content behavior) */}
         <div className="w-[55%] flex flex-col justify-between h-[650px] pr-4 lg:pr-8 relative z-10 pb-12">
           <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
@@ -164,6 +153,33 @@ export function MainCarousel({
                   );
                 })}
               </div>
+
+              {/* Button (unchanged from your current code) */}
+              <div className="mt-4">
+                <Button
+                  onClick={onStartClick}
+                  className="bg-[#00c2cb] hover:bg-[#00adb5] text-white px-10 py-6 rounded-2xl transition-all duration-200 font-bold text-xl lg:text-2xl shadow-xl transform hover:-translate-y-1 hover:scale-[1.02] cursor-pointer"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <div className="flex items-center">
+                      <Spinner
+                        size="md"
+                        className="mr-3"
+                        label="Starting"
+                        trackClassName="border-white/30"
+                        indicatorClassName="border-white border-t-transparent"
+                      />
+                      <span>Starting...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <Fingerprint className="mr-3 h-8 w-8" />
+                      <span>Click to Start</span>
+                    </div>
+                  )}
+                </Button>
+              </div>
             </motion.div>
           </AnimatePresence>
 
@@ -183,107 +199,106 @@ export function MainCarousel({
           </div>
         </div>
 
-        <div className="w-[45%] flex justify-center items-center relative h-[600px]">
-          <div className="relative w-full max-w-xl transform -translate-y-12">
-            <div className="relative h-[350px] lg:h-[400px] xl:h-[450px] w-full flex items-center justify-center">
-              {/* decorative elements remain static */}
+        {/* RIGHT: triptych cards styled like the old landing page */}
+        <div className="w-[58%] flex justify-center items-center relative h-[650px] pb-10">
+          <div className="relative w-full max-w-xl -translate-y-2">
+            <div className="relative h-[460px] w-full flex items-center justify-center">
+              {/* LEFT CARD */}
               <div
-                className="absolute rounded-3xl border-2 border-[#00c2cb]/70 bg-white/50 bottom-43 right-43"
+                className="absolute bg-white rounded-xl"
                 style={{
-                  width: "clamp(260px, 20vw, 200px)",
-                  height: "clamp(260px, 20vw, 200px)",
-                  transform: "translate(-70px, 10px)",
-                  zIndex: 0,
+                  width: "clamp(170px, 14vw, 210px)",
+                  height: "clamp(240px, 20vw, 290px)",
+                  boxShadow: cardShadow,
+                  zIndex: 1,
+                  transform: "translateX(clamp(-250px, -15vw, -110px))",
                 }}
-              />
+              >
+                <div className="absolute inset-0 rounded-[inherit] ring-1 ring-[#00c2cb]" />
 
-              <div
-                className="absolute rounded-3xl border-2 border-[#00c2cb]/60 bg-white/40 top-43 left-43"
-                style={{
-                  width: "clamp(260px, 20vw, 200px)",
-                  height: "clamp(260px, 20vw, 200px)",
-                  transform: "translate(70px, 10px)",
-                  zIndex: 0,
-                }}
-              />
-
-              <div
-                className="absolute rounded-full"
-                style={{
-                  width: "clamp(280px, 36vw, 360px)",
-                  height: "clamp(280px, 36vw, 360px)",
-                  background: "rgba(0,194,203,0.16)",
-                  filter: "blur(35px)",
-                  zIndex: 0,
-                }}
-              />
-
-              {/* only this inner box will crossfade */}
-              <AnimatePresence initial={false} custom={direction} mode="wait">
-                <motion.div
-                  key={currentSlide}
-                  custom={direction}
-                  variants={imageVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ opacity: { duration: 0.45 }, scale: { duration: 0.45 } }}
-                  className="relative rounded-3xl p-[3px] bg-linear-to-b from-cyan-300 via-[#00c2cb] to-teal-600 shadow-[0_0_35px_rgba(0,194,203,0.45)]"
-                  style={{
-                    width: "clamp(280px, 34vw, 340px)",
-                    height: "clamp(280px, 34vw, 340px)",
-                    zIndex: 2,
-                  }}
-                >
-                  <div className="relative h-full w-full bg-white rounded-3xl overflow-hidden flex items-center justify-center">
-                    <div className="relative w-full h-full rounded-2xl flex items-center justify-center overflow-hidden">
-                      {slide.imagePath ? (
-                        <Image
-                          src={slide.imagePath}
-                          alt="Slide visual"
-                          fill
-                          draggable={false}
-                          className="object-contain"
-                          sizes="(min-width: 1280px) 340px, (min-width: 1024px) 320px, 280px"
-                          priority
-                        />
-                      ) : (
-                        <div className="flex flex-col items-center justify-center p-6">
-                          {Icon && <Icon className="w-20 h-20 text-gray-300 mb-4" />}
-                          <p className="text-gray-400 text-center">No Image Available</p>
-                        </div>
-                      )}
-                    </div>
+                <div className="flex items-center justify-center h-full p-2">
+                  <div className="relative w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
+                    <Image
+                      src={staticImages[0]?.imagePath ?? ""}
+                      alt={staticImages[0]?.title ?? "Left image"}
+                      fill
+                      draggable={false}
+                      className="object-contain"
+                      sizes="(min-width: 1280px) 160px, (min-width: 1024px) 150px, 130px"
+                      style={{
+                        opacity: 0.85,
+                        filter:
+                          "brightness(1) contrast(1.05) drop-shadow(0 4px 6px rgba(0, 194, 203, 0.15))",
+                      }}
+                    />
                   </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
+                </div>
+              </div>
 
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 w-full flex justify-center">
-            <Button
-              onClick={onStartClick}
-              className="bg-[#00c2cb] hover:bg-[#00adb5] text-white px-12 py-8 lg:py-9 rounded-2xl transition-all duration-200 font-bold text-xl lg:text-2xl shadow-xl hover:shadow-2xl animate-heartbeat hover:animate-none transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
-              disabled={loading}
-            >
-              {loading ? (
-                <div className="flex items-center">
-                  <Spinner
-                    size="md"
-                    className="mr-3"
-                    label="Starting"
-                    trackClassName="border-white/30"
-                    indicatorClassName="border-white border-t-transparent"
-                  />
-                  <span>Starting...</span>
+              {/* RIGHT CARD */}
+              <div
+                className="absolute bg-white rounded-xl"
+                style={{
+                  width: "clamp(170px, 14vw, 210px)",
+                  height: "clamp(240px, 20vw, 290px)",
+                  boxShadow: cardShadow,
+                  zIndex: 1,
+                  transform: "translateX(clamp(260px, 13vw, 360px))",
+                }}
+              >
+                <div className="absolute inset-0 rounded-[inherit] ring-1 ring-[#00c2cb]" />
+
+                <div className="flex items-center justify-center h-full p-2">
+                  <div className="relative w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
+                    <Image
+                      src={staticImages[2]?.imagePath ?? ""}
+                      alt={staticImages[2]?.title ?? "Right image"}
+                      fill
+                      draggable={false}
+                      className="object-contain"
+                      sizes="(min-width: 1280px) 160px, (min-width: 1024px) 150px, 130px"
+                      style={{
+                        opacity: 0.85,
+                        filter:
+                          "brightness(1) contrast(1.05) drop-shadow(0 4px 6px rgba(0, 194, 203, 0.15))",
+                      }}
+                    />
+                  </div>
                 </div>
-              ) : (
-                <div className="flex items-center">
-                  <Fingerprint className="mr-3 h-8 w-8" />
-                  <span>Click to Start</span>
+              </div>
+
+              {/* MAIN CARD */}
+              <div
+                className="bg-white rounded-xl relative"
+                style={{
+                  width: "clamp(260px, 22vw, 320px)",
+                  height: "clamp(360px, 30vw, 440px)",
+                  boxShadow: mainShadow,
+                  zIndex: 2,
+                }}
+              >
+                <div className="absolute inset-0 rounded-[inherit] ring-1 ring-[#00c2cb]" />
+
+                <div className="flex items-center justify-center h-full p-3">
+                  <div className="relative w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
+                    <Image
+                      src={staticImages[1]?.imagePath ?? ""}
+                      alt={staticImages[1]?.title ?? "Main image"}
+                      fill
+                      draggable={false}
+                      className="object-contain"
+                      sizes="(min-width: 1280px) 240px, (min-width: 1024px) 220px, 200px"
+                      style={{
+                        filter: "drop-shadow(0 10px 20px rgba(0, 194, 203, 0.25))",
+                      }}
+                    />
+                  </div>
                 </div>
-              )}
-            </Button>
+              </div>
+            </div>
+
+            {/* optional: subtle glow like the old one (kept very light) */}
+            <div className="absolute inset-x-0 bottom-0 h-28 bg-[#00c2cb] opacity-[0.06] blur-3xl" />
           </div>
         </div>
       </div>

@@ -16,22 +16,25 @@ import { FileText, User, ScanLine, BarChart3 } from "lucide-react";
 const features = [
   {
     title: "Consent",
-    description: "Review and agree to our privacy-first consent form before starting.",
+    description:
+      "Review and agree to our privacy-focused consent form before proceeding.",
     icon: <FileText />,
   },
   {
     title: "Personal Information",
-    description: "Enter your age, gender, height, weight, and donation eligibility.",
+    description:
+      "Provide your age, gender, height, and weight, and choose whether to view detailed results.",
     icon: <User />,
   },
   {
     title: "Fingerprint Scan & Analysis",
-    description: "Scan your fingerprint for AI-powered dermatoglyphic analysis.",
+    description: "Scan your fingerprint for AI-based dermatoglyphic analysis.",
     icon: <ScanLine />,
   },
   {
     title: "Results & Recommendations",
-    description: "Get instant predictions, risk assessment, and donation guidance.",
+    description:
+      "View your predictions, risk assessment, and nearby hospitals and blood donation centers.",
     icon: <BarChart3 />,
   },
 ];
