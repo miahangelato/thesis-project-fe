@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export async function GET(
     request: NextRequest,
@@ -43,6 +43,7 @@ export async function GET(
         });
     } catch (error) {
         console.error("PDF download error:", error);
-        return new NextResponse("Failed to download PDF", { status: 500 });
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        return new NextResponse(`Failed to download PDF. Details: ${errorMessage}`, { status: 500 });
     }
 }
