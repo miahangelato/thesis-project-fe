@@ -14,7 +14,10 @@ export async function GET(
         }
 
         // Fetch PDF from backend using the token
-        const backendUrl = `${BACKEND_URL}/api/session/report/${token}`;
+        // Handle potential double /api/api issue if ENV already has /api
+        const baseUrl = BACKEND_URL.replace(/\/$/, ""); // remove trailing slash
+        const apiPath = baseUrl.endsWith("/api") ? "" : "/api";
+        const backendUrl = `${baseUrl}${apiPath}/session/report/${token}`;
 
         const response = await fetch(backendUrl, {
             method: "GET",
