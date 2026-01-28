@@ -4,7 +4,15 @@ import type { ResultsParticipantData } from "@/types/results";
 
 import { Info } from "lucide-react";
 
-const normalizeText = (text: string) => text.replace(/\r\n/g, "\n").trim();
+const normalizeText = (text: string) => {
+  // Normalize line breaks and trim each line while preserving paragraph structure
+  return text
+    .replace(/\r\n/g, "\n")
+    .split("\n")
+    .map(line => line.trim())
+    .join("\n")
+    .trim();
+};
 
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));

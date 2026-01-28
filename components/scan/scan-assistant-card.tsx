@@ -233,8 +233,9 @@ export function ScanAssistantCard({
                 onClick={onRescan}
                 variant="outline"
                 size="lg"
-                className="w-50 h-12 mt-3 text-red-600 border-2 border-red-500 hover:bg-red-50 hover:text-red-700 hover:border-red-600 font-bold text-lg cursor-pointer transition-all shadow-sm"
+                className="w-50 h-12 mt-3 text-[#00c2cb] border-2 border-[#00c2cb] hover:bg-teal-50 hover:text-[#00adb5] hover:border-[#00adb5] font-bold text-lg cursor-pointer transition-all shadow-sm flex items-center justify-center gap-2"
               >
+                <RefreshCcw className="w-5 h-5" />
                 Retake this Finger
               </Button>
             )}

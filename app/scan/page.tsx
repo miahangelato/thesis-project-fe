@@ -11,6 +11,7 @@ import { useBackNavigation } from "@/hooks/use-back-navigation";
 
 import { getErrorMessage } from "@/lib/errors";
 import { ROUTES, STEPS } from "@/lib/constants";
+import { FINGER_NAMES } from "@/lib/finger-names";
 
 import { ProgressHeader } from "@/components/layout/progress-header";
 import { StepNavigation } from "@/components/layout/step-navigation";
@@ -27,6 +28,7 @@ import { Toast } from "@/components/ui/toast";
 import { ScanInfoPanel } from "@/components/scan/scan-info-panel";
 import { ScanAssistantCard } from "@/components/scan/scan-assistant-card";
 import { ScanSessionModals } from "@/components/scan/scan-session-modals";
+import { RetakeConfirmModal } from "@/components/modals/retake-confirm-modal";
 import { ScanConfirmationModal } from "@/components/modals/scan-confirmation-modal";
 
 export default function ScanPage() {
@@ -106,6 +108,7 @@ export default function ScanPage() {
   const [showFinishModal, setShowFinishModal] = useState(false);
   const [showScanConfirmModal, setShowScanConfirmModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showRetakeModal, setShowRetakeModal] = useState(false);
   const { showModal, handleConfirm, handleCancel, promptBackNavigation } =
     useBackNavigation(false);
   const [showResetConfirmModal, setShowResetConfirmModal] = useState(false);
@@ -209,6 +212,15 @@ export default function ScanPage() {
     setShowFinishModal(false);
   };
 
+  const handleRetakeClick = () => {
+    setShowRetakeModal(true);
+  };
+
+  const handleRetakeConfirm = () => {
+    setShowRetakeModal(false);
+    handleRescan();
+  };
+
   return (
     <ProtectedRoute requireSession={true} requiredStep={STEPS.SCAN}>
       <>
@@ -257,6 +269,13 @@ export default function ScanPage() {
           }}
         />
 
+        <RetakeConfirmModal
+          isOpen={showRetakeModal}
+          fingerName={FINGER_NAMES[currentFinger]}
+          onConfirm={handleRetakeConfirm}
+          onCancel={() => setShowRetakeModal(false)}
+        />
+
         <AnalysisLoadingOverlay
           isOpen={analysisOverlayOpen}
           state={analysisOverlayState}
@@ -303,7 +322,7 @@ export default function ScanPage() {
                       onPreviousFinger={handlePreviousFinger}
                       onNextFinger={handleNextFinger}
                       onTogglePaused={togglePaused}
-                      onRescan={handleRescan}
+                      onRescan={handleRetakeClick}
                       rescanningFinger={rescanningFinger}
                     />
                   </div>
