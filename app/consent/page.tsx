@@ -88,7 +88,7 @@ export default function ConsentPage() {
               Preparing Session
             </h2>
             <p className="text-slate-700 text-lg">
-              Initializing secure connection and calibrating sensors...
+              Getting everything ready for the scan…
             </p>
           </div>
         )}

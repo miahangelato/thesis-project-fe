@@ -7,19 +7,20 @@ type PreparingScanOverlayProps = {
 
 export function PreparingScanOverlay({ isOpen }: PreparingScanOverlayProps) {
   const preparationSteps = [
-    {
-      label: "Preparing Scanner",
-      description: "INITIALIZING SCANNER HARDWARE",
-      status: "current" as const,
-      icon: ScanLine,
-    },
-    {
-      label: "Configuring Session",
-      description: "SECURING SESSION & CALIBRATION",
-      status: "pending" as const,
-      icon: ShieldCheck,
-    },
-  ];
+  {
+    label: "Preparing Scanner",
+    description: "Getting the scanner ready",
+    status: "current" as const,
+    icon: ScanLine,
+  },
+  {
+    label: "Setting Up Session",
+    description: "Preparing the scan process",
+    status: "pending" as const,
+    icon: ShieldCheck,
+  },
+];
+
 
   return (
     <FullScreenLoader

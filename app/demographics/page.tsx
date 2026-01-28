@@ -93,40 +93,18 @@ export default function DemographicsPage() {
     dismissKeypad();
     if (loading) return;
 
+    // Form validation is handled by disabled button state and inline error messages
     if (!formData.age || !formData.weight || !formData.gender || !heightCm) {
-      alert("Please fill out age, weight, height, and gender.");
       return;
     }
 
+    // Errors are already displayed inline with red styling
     if (hasErrors) {
-      const errorMessages = validationWarnings
-        .filter((w) => w.severity === "error")
-        .map((w) => w.message)
-        .join("\n");
-      alert("Please fix the following errors before continuing:\n\n" + errorMessages);
       return;
     }
 
-    if (hasWarnings) {
-      const warnings = validationWarnings.filter((w) => w.severity === "warning");
-
-      const onlyBmiWarnings =
-        warnings.length > 0 &&
-        warnings.every((w) => {
-          const f = (w.field || "").toString().toLowerCase();
-          return f === "bmi" || f.includes("bmi");
-        });
-
-      if (!onlyBmiWarnings) {
-        const warningMessages = warnings.map((w) => w.message).join("\n");
-        const confirmed = confirm(
-          "Note: The following concerns were detected:\n\n" +
-            warningMessages +
-            "\n\nDo you want to continue anyway?"
-        );
-        if (!confirmed) return;
-      }
-    }
+    // Warnings are already displayed inline, so no need for confirmation dialog
+    // Users can proceed even with warnings visible
 
     setLoading(true);
     const start = Date.now();

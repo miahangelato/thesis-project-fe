@@ -50,48 +50,50 @@ export function ScanInfoPanel({ demographics }: Props) {
       </div>
 
       <div className="bg-linear-to-br from-[#e4f7f8] to-white rounded-2xl p-5 border-2 border-[#00c2cb]/20 shadow-sm">
-        <h3 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-3">
-          <Lightbulb className="w-7 h-7 text-[#00c2cb]" />
-          Scanning Tips
-        </h3>
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <div className="w-9 h-9 rounded-full bg-[#00c2cb]/10 flex items-center justify-center shrink-0">
-              <Sparkles className="h-5 w-5 text-[#00c2cb]" />
-            </div>
-            <p className="text-lg font-medium text-slate-700 whitespace-nowrap">
-              Clean finger and scanner surface
-            </p>
-          </div>
+  <h3 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-3">
+    <Lightbulb className="w-7 h-7 text-[#00c2cb]" />
+    Scanning Tips
+  </h3>
 
-          <div className="flex items-center gap-4">
-            <div className="w-9 h-9 rounded-full bg-[#00c2cb]/10 flex items-center justify-center shrink-0">
-              <Fingerprint className="h-5 w-5 text-[#00c2cb]" />
-            </div>
-            <p className="text-lg font-medium text-slate-700 whitespace-nowrap">
-              Press firmly but gently
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="w-9 h-9 rounded-full bg-[#00c2cb]/10 flex items-center justify-center shrink-0">
-              <Target className="h-5 w-5 text-[#00c2cb]" />
-            </div>
-            <p className="text-lg font-medium text-slate-700 whitespace-nowrap">
-              Keep finger centered and still
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="w-9 h-9 rounded-full bg-[#00c2cb]/10 flex items-center justify-center shrink-0">
-              <Droplets className="h-5 w-5 text-[#00c2cb]" />
-            </div>
-            <p className="text-lg font-medium text-slate-700 whitespace-nowrap">
-              If too dry, lightly moisten finger
-            </p>
-          </div>
-        </div>
+  <div className="space-y-4">
+    <div className="flex items-center gap-4">
+      <div className="w-9 h-9 rounded-full bg-[#00c2cb]/10 flex items-center justify-center shrink-0">
+        <Sparkles className="h-5 w-5 text-[#00c2cb]" />
       </div>
+      <p className="text-lg font-medium text-slate-700 whitespace-nowrap">
+        Follow the on-screen instructions
+      </p>
+    </div>
+
+    <div className="flex items-center gap-4">
+      <div className="w-9 h-9 rounded-full bg-[#00c2cb]/10 flex items-center justify-center shrink-0">
+        <Fingerprint className="h-5 w-5 text-[#00c2cb]" />
+      </div>
+      <p className="text-lg font-medium text-slate-700 whitespace-nowrap">
+        Place your finger only when prompted
+      </p>
+    </div>
+
+    <div className="flex items-center gap-4">
+      <div className="w-9 h-9 rounded-full bg-[#00c2cb]/10 flex items-center justify-center shrink-0">
+        <Target className="h-5 w-5 text-[#00c2cb]" />
+      </div>
+      <p className="text-lg font-medium text-slate-700 whitespace-nowrap">
+        Keep finger off during preparation or countdown
+      </p>
+    </div>
+
+    <div className="flex items-center gap-4">
+      <div className="w-9 h-9 rounded-full bg-[#00c2cb]/10 flex items-center justify-center shrink-0">
+        <Droplets className="h-5 w-5 text-[#00c2cb]" />
+      </div>
+      <p className="text-lg font-medium text-slate-700 whitespace-nowrap">
+        Lift your finger when the scan finishes
+      </p>
+    </div>
+  </div>
+</div>
+
 
       <div className="bg-red-50 border-2 border-red-500 rounded-2xl px-5 py-4 flex gap-4 items-center shadow-sm">
         <AlertTriangle className="h-7 w-7 text-red-600 shrink-0" />
