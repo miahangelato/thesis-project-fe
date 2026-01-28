@@ -172,12 +172,6 @@ export const AnalysisLoadingOverlay = ({
             </div>
           </div>
         )}
-
-        {!isError && (
-          <p className="text-slate-600 text-sm mt-8 animate-pulse">
-            Estimated time: 10-15 seconds
-          </p>
-        )}
       </div>
     </div>
   );
