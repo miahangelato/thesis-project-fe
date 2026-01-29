@@ -64,14 +64,11 @@ export class PrivacyCleanupManager {
 
     // Set absolute timeout (30 minutes)
     this.absoluteTimeoutId = setTimeout(() => {
-      console.log("[PRIVACY] Session expired: Max lifetime reached (30min)");
       this.expireSession("absolute");
     }, PRIVACY_CONFIG.ABSOLUTE_TIMEOUT_MS);
 
     // Set initial inactivity timeout (10 minutes)
     this.resetInactivityTimer();
-
-    console.log("[PRIVACY] Session monitoring started (30min max, 10min inactivity)");
   }
 
   /**
@@ -85,7 +82,6 @@ export class PrivacyCleanupManager {
     this.lastActivityTime = Date.now();
 
     this.inactivityTimeoutId = setTimeout(() => {
-      console.log("[PRIVACY] Session expired: Inactivity timeout (10min)");
       this.expireSession("inactivity");
     }, PRIVACY_CONFIG.INACTIVITY_TIMEOUT_MS);
   }
@@ -132,7 +128,6 @@ export class PrivacyCleanupManager {
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && this.sessionStartTime) {
         // Page went to background - could clear immediately or set shorter timeout
-        console.log("[PRIVACY] Page hidden - session may expire faster");
 
         // Option 1: Expire immediately when page hidden (MOST SECURE)
         // this.expireSession('visibility');
@@ -141,7 +136,6 @@ export class PrivacyCleanupManager {
         // (Currently using standard timeout)
       } else if (!document.hidden && this.sessionStartTime) {
         // Page came back to foreground
-        console.log("[PRIVACY] Page visible again - recording activity");
         this.recordActivity();
       }
     });
@@ -154,7 +148,6 @@ export class PrivacyCleanupManager {
     if (typeof window === "undefined") return;
 
     window.addEventListener("beforeunload", () => {
-      console.log("[PRIVACY] Page unloading - clearing session data");
       // Don't call expireSession here as it may trigger navigation
       // Just clear storage directly
       this.clearAllStorage();
@@ -193,8 +186,6 @@ export class PrivacyCleanupManager {
     this.sessionStartTime = null;
     this.lastActivityTime = null;
     this.onExpire = null;
-
-    console.log("[PRIVACY] Session monitoring stopped");
   }
 
   /**
@@ -240,10 +231,8 @@ export class PrivacyCleanupManager {
 
       // Clear sessionStorage entirely
       window.sessionStorage.clear();
-
-      console.log("[PRIVACY] All storage cleared");
     } catch (e) {
-      console.error("[PRIVACY] Error clearing storage:", e);
+      // Error clearing storage - continue silently
     }
   }
 
@@ -286,7 +275,6 @@ export function preventBFCache() {
 
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
-      console.log("[PRIVACY] Page restored from bfcache - forcing reload");
       window.location.reload();
     }
   });

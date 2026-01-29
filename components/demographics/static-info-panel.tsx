@@ -40,7 +40,7 @@ export function StaticInfoPanel() {
             <Shield className="h-5 w-5 text-[#00c2cb]" />
           </div>
           <p className="text-xl font-medium text-slate-700 whitespace-nowrap">
-            Your data is protected
+            Access list of hospitals and blood donation centers 
           </p>
         </div>
       </div>

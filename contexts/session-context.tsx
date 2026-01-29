@@ -43,10 +43,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    console.log(
-      "[PRIVACY] SessionProvider mounted - starting fresh (no session restoration)"
-    );
-
     // Prevent browser back/forward cache restoration
     preventBFCache();
 
@@ -62,15 +58,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       window.sessionStorage.clear();
     }
 
-    console.log("[PRIVACY] ========== CLEARING ALL STORAGE ==========");
-
     setIsLoading(false);
   }, []);
 
   // Define clearSession BEFORE it is used in useEffect
   const clearSession = useCallback(
     (showMessage = false, reason?: string) => {
-      console.log("[PRIVACY] ========== CLEARING SESSION ==========");
       const currentSessionId = sessionId;
 
       // Stop monitoring
@@ -98,11 +91,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         if (currentSessionId) {
           window.sessionStorage.removeItem(currentSessionId);
         }
-
-        console.log("[PRIVACY] All client-side data cleared");
       }
-
-      console.log("[PRIVACY] ========== SESSION CLEARED ==========");
 
       // Navigate to home if showing expiration message
       if (showMessage && typeof window !== "undefined") {
@@ -116,15 +105,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (sessionId && !isLoading) {
-      console.log(`[PRIVACY] Starting session monitoring for ${sessionId}`);
       setExpirationReason(null);
 
       // Start automatic expiration monitoring (only on client)
       const manager = privacyManagerRef.current;
       if (manager) {
         manager.startSession((reason) => {
-          console.log(`[PRIVACY] Session expired: ${reason}`);
-
           const message =
             reason === "inactivity"
               ? PRIVACY_MESSAGES.SESSION_EXPIRED_INACTIVITY
@@ -146,7 +132,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, [sessionId, isLoading, clearSession]);
 
   const setSession = useCallback((id: string, consentGiven: boolean) => {
-    console.log(`[PRIVACY] Session created: ${id}`);
     setSessionId(id);
     setConsent(consentGiven);
   }, []);

@@ -73,7 +73,7 @@ export function MainCarousel({
 
   const textVariants = slideVariants;
 
-  const staticImages = landingCarouselSlides.slice(0, 3);
+  const fingerprintImage = "/landing-page/fingerprint-removebg-preview (1).png";
 
   const cardShadow =
     "0 15px 35px rgba(0, 194, 203, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05)";
@@ -105,85 +105,89 @@ export function MainCarousel({
           }
         }}
       >
-        {/* LEFT: text (unchanged content behavior) */}
-        <div className="w-[55%] flex flex-col justify-between h-[650px] pr-4 lg:pr-8 relative z-10 pb-12">
-          <AnimatePresence initial={false} custom={direction} mode="wait">
-            <motion.div
-              key={currentSlide}
-              custom={direction}
-              variants={textVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
-              }}
-              className="flex flex-col justify-start pt-20"
-            >
-              {slide.subtitle && (
-                <div className="inline-block mb-3">
-                  <span className="text-[#00c2cb] font-semibold text-lg lg:text-xl bg-[#e4f7f8] px-4 py-2 rounded-full">
-                    {slide.subtitle}
-                  </span>
+        {/* LEFT: content */}
+        <div className="w-[55%] flex flex-col h-[650px] pr-4 lg:pr-8 relative z-10 pb-12">
+          {/* Animated Text Content */}
+          <div className="flex-1 relative mt-20">
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div
+                key={currentSlide}
+                custom={direction}
+                variants={textVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 },
+                }}
+                className="absolute inset-0 top-0 left-0 right-0"
+              >
+                {slide.subtitle && (
+                  <div className="inline-block mb-3">
+                    <span className="text-[#00c2cb] font-semibold text-lg lg:text-xl bg-[#e4f7f8] px-4 py-2 rounded-full">
+                      {slide.subtitle}
+                    </span>
+                  </div>
+                )}
+
+                <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800 mb-6 leading-tight">
+                  {slide.title}
+                </h1>
+
+                <div className="space-y-2">
+                  {slide.content.map((line, idx) => {
+                    const isBullet = line.trim().startsWith("•");
+                    const text = isBullet ? line.trim().substring(1).trim() : line;
+
+                    return (
+                      <div
+                        key={idx}
+                        className={`flex items-start ${isBullet ? "pl-2" : ""}`}
+                      >
+                        {isBullet && (
+                          <span className="text-[#00c2cb] mr-2 font-bold text-lg">•</span>
+                        )}
+                        <p className="text-gray-600 text-base lg:text-lg xl:text-xl leading-relaxed select-none">
+                          {text}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
-              )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-              <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800 mb-6 leading-tight">
-                {slide.title}
-              </h1>
+          {/* Static Button & Helper Text */}
+          <div className="flex flex-col items-start space-y-8 mb-10 z-20">
+             <Button
+                onClick={onStartClick}
+                className="bg-[#00c2cb] hover:bg-[#00adb5] text-white px-10 py-8 rounded-2xl transition-all duration-200 font-bold text-xl lg:text-2xl shadow-xl transform hover:-translate-y-1 hover:scale-[1.02] cursor-pointer min-w-[280px]"
+                disabled={loading}
+              >
+                {loading ? (
+                  <div className="flex items-center">
+                    <Spinner
+                      size="md"
+                      className="mr-3"
+                      label="Starting"
+                      trackClassName="border-white/30"
+                      indicatorClassName="border-white border-t-transparent"
+                    />
+                    <span>Starting...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center">
+                    <Fingerprint className="mr-3 h-8 w-8" />
+                    <span>Click to Start</span>
+                  </div>
+                )}
+              </Button>
+          </div>
 
-              <div className="space-y-2 mb-10">
-                {slide.content.map((line, idx) => {
-                  const isBullet = line.trim().startsWith("•");
-                  const text = isBullet ? line.trim().substring(1).trim() : line;
-
-                  return (
-                    <div
-                      key={idx}
-                      className={`flex items-start ${isBullet ? "pl-2" : ""}`}
-                    >
-                      {isBullet && (
-                        <span className="text-[#00c2cb] mr-2 font-bold text-lg">•</span>
-                      )}
-                      <p className="text-gray-600 text-base lg:text-lg xl:text-xl leading-relaxed select-none">
-                        {text}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Button (unchanged from your current code) */}
-              <div className="mt-4">
-                <Button
-                  onClick={onStartClick}
-                  className="bg-[#00c2cb] hover:bg-[#00adb5] text-white px-10 py-6 rounded-2xl transition-all duration-200 font-bold text-xl lg:text-2xl shadow-xl transform hover:-translate-y-1 hover:scale-[1.02] cursor-pointer"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <div className="flex items-center">
-                      <Spinner
-                        size="md"
-                        className="mr-3"
-                        label="Starting"
-                        trackClassName="border-white/30"
-                        indicatorClassName="border-white border-t-transparent"
-                      />
-                      <span>Starting...</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center">
-                      <Fingerprint className="mr-3 h-8 w-8" />
-                      <span>Click to Start</span>
-                    </div>
-                  )}
-                </Button>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          <div className="absolute bottom-28 left-0 flex items-center space-x-3 z-20">
+          {/* Pagination Indicators */}
+          <div className="flex items-center space-x-3 z-20">
             {landingCarouselSlides.map((_, index) => (
               <button
                 key={index}
@@ -199,7 +203,7 @@ export function MainCarousel({
           </div>
         </div>
 
-        {/* RIGHT: triptych cards styled like the old landing page */}
+        {/* RIGHT: triptych cards */}
         <div className="w-[58%] flex justify-center items-center relative h-[650px] pb-10">
           <div className="relative w-full max-w-xl -translate-y-2">
             <div className="relative h-[460px] w-full flex items-center justify-center">
@@ -223,10 +227,10 @@ export function MainCarousel({
                       alt={staticImages[0]?.title ?? "Left image"}
                       fill
                       draggable={false}
-                      className="object-contain"
+                      className="object-contain blur-[2px]"
                       sizes="(min-width: 1280px) 160px, (min-width: 1024px) 150px, 130px"
                       style={{
-                        opacity: 0.85,
+                        opacity: 0.6,
                         filter:
                           "brightness(1) contrast(1.05) drop-shadow(0 4px 6px rgba(0, 194, 203, 0.15))",
                       }}
@@ -255,10 +259,10 @@ export function MainCarousel({
                       alt={staticImages[2]?.title ?? "Right image"}
                       fill
                       draggable={false}
-                      className="object-contain"
+                      className="object-contain blur-[2px]"
                       sizes="(min-width: 1280px) 160px, (min-width: 1024px) 150px, 130px"
                       style={{
-                        opacity: 0.85,
+                        opacity: 0.6,
                         filter:
                           "brightness(1) contrast(1.05) drop-shadow(0 4px 6px rgba(0, 194, 203, 0.15))",
                       }}

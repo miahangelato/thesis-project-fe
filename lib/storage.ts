@@ -52,9 +52,6 @@ class StorageWrapper {
 
     // PRIVACY: Sensitive data goes to memory only
     if (this.isSensitiveKey(key)) {
-      console.log(
-        `[PRIVACY] Storing sensitive key "${key}" in memory only (not persisted)`
-      );
       this.memoryStorage.set(key, value);
       return;
     }
@@ -76,8 +73,6 @@ class StorageWrapper {
   }
 
   clear(): void {
-    console.log("[PRIVACY] ========== CLEARING ALL STORAGE ==========");
-
     // Clear in-memory first
     this.memoryStorage.clear();
 

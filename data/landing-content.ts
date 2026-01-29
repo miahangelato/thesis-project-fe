@@ -21,7 +21,7 @@ export const landingCarouselSlides: CarouselSlide[] = [
       "We translate ridge patterns into easy-to-understand health signals.",
       "Use the results to guide simple, practical next steps.",
     ],
-    imagePath: "/landing-page/hero.png",
+    imagePath: "/landing-page/aa2e6ce0-b252-4973-b7d2-67ad3119479d.jpg",
     bgGradient: "from-teal-50 to-cyan-50",
   },
   {
@@ -33,7 +33,7 @@ export const landingCarouselSlides: CarouselSlide[] = [
       "This gives a quick, needle-free indication for everyday use.",
       "Follow up with clinical tests for confirmation.",
     ],
-    imagePath: "/landing-page/blood-group.png",
+    imagePath: "/landing-page/aa2e6ce0-b252-4973-b7d2-67ad3119479d.jpg",
     bgGradient: "from-red-50 to-rose-50",
   },
   {
@@ -45,7 +45,7 @@ export const landingCarouselSlides: CarouselSlide[] = [
       "It is designed to encourage timely follow-up, not replace care.",
       "Small actions can make a big difference over time.",
     ],
-    imagePath: "/landing-page/diab.png",
+    imagePath: "/landing-page/aa2e6ce0-b252-4973-b7d2-67ad3119479d.jpg",
     bgGradient: "from-blue-50 to-indigo-50",
   },
   {
@@ -57,7 +57,7 @@ export const landingCarouselSlides: CarouselSlide[] = [
       "Use the tool to learn and take practical next steps.",
       "Consult professionals for clinical decisions.",
     ],
-    imagePath: "/landing-page/ethics.png",
+    imagePath: "/landing-page/aa2e6ce0-b252-4973-b7d2-67ad3119479d-removebg-preview.png",
     bgGradient: "from-yellow-50 to-amber-50",
   },
 ];

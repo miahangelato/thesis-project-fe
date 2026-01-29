@@ -289,7 +289,7 @@ export default function ScanPage() {
                 currentStep={STEPS.SCAN}
                 totalSteps={4}
                 title="Fingerprint Scan"
-                subtitle="Securely scan your fingerprints for analysis"
+                subtitle="Scan your fingerprints for analysis"
                 accentColor="#00c2cb"
                 onEndSession={promptBackNavigation}
               />

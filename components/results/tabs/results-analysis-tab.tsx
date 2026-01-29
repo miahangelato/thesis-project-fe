@@ -5,13 +5,62 @@ import type { ResultsParticipantData } from "@/types/results";
 import { Info } from "lucide-react";
 
 const normalizeText = (text: string) => {
-  // Normalize line breaks and trim each line while preserving paragraph structure
-  return text
+  // Process text line by line to maintain proper structure
+  const lines = text
     .replace(/\r\n/g, "\n")
     .split("\n")
     .map(line => line.trim())
-    .join("\n")
-    .trim();
+    .filter(line => line.length > 0) // Remove empty lines
+    .map(line => line.replace(/^\d+\.\s*/, '')); // Remove numbering
+  
+  // Process lines to group heading-paragraph pairs
+  const result = [];
+  let i = 0;
+  
+  while (i < lines.length) {
+    const currentLine = lines[i];
+    
+    // Check if this is a heading
+    if (currentLine.toLowerCase().includes('what this result') || 
+        currentLine.toLowerCase().includes('scientific basis') ||
+        currentLine.toLowerCase().includes('recommendations') ||
+        currentLine.toLowerCase().includes('what influenced') ||
+        currentLine.toLowerCase().includes('what you can')) {
+      
+      // Add heading
+      result.push(currentLine);
+      
+      // Add next line as paragraph if it exists and isn't another heading
+      if (i + 1 < lines.length) {
+        const nextLine = lines[i + 1];
+        const isNextHeading = nextLine.toLowerCase().includes('what this result') || 
+                           nextLine.toLowerCase().includes('scientific basis') ||
+                           nextLine.toLowerCase().includes('recommendations') ||
+                           nextLine.toLowerCase().includes('what influenced') ||
+                           nextLine.toLowerCase().includes('what you can');
+        
+        if (!isNextHeading) {
+          result.push(nextLine);
+          i += 2; // Skip both heading and paragraph
+        } else {
+          i += 1; // Skip only heading
+        }
+      } else {
+        i += 1; // Skip heading
+      }
+      
+      // Add blank line between sections (except after last section)
+      if (i < lines.length) {
+        result.push(''); // Blank line
+      }
+    } else {
+      // Regular line, add it
+      result.push(currentLine);
+      i += 1;
+    }
+  }
+  
+  return result.join('\n');
 };
 
 const clamp = (value: number, min: number, max: number) =>
@@ -130,7 +179,7 @@ export function ResultsAnalysisTab({
           <div className="relative flex-1 min-h-0">
             <div
               ref={scrollRef}
-              className="h-full overflow-y-auto max-w-none text-slate-700 whitespace-pre-wrap leading-relaxed text-xl px-6 pb-6"
+              className="h-full max-h-[500px] overflow-y-auto overflow-x-hidden text-slate-700 whitespace-pre-wrap break-words leading-relaxed text-xl px-6 pb-6 w-full"
             >
               {displayText}
               {!isComplete && (

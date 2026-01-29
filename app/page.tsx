@@ -9,7 +9,7 @@ import { sessionAPI } from "@/lib/api";
 
 import { Footer } from "@/components/layout/footer";
 import { WarningHeader } from "@/components/layout/warning-header";
-import { MainCarousel } from "@/components/features/landing/main-carousel";
+import { MainLanding } from "@/components/features/landing/main-landing";
 
 import { FileText, User, ScanLine, BarChart3 } from "lucide-react";
 
@@ -75,8 +75,7 @@ export default function LandingPage() {
       </div>
 
       <div className="relative flex-1 w-full min-h-0 flex items-center">
-        <MainCarousel
-          autoPlayInterval={6000}
+        <MainLanding
           onStartClick={handleStartClick}
           loading={loading}
         />
