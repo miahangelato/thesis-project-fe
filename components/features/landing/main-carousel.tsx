@@ -223,8 +223,8 @@ export function MainCarousel({
                 <div className="flex items-center justify-center h-full p-2">
                   <div className="relative w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
                     <Image
-                      src={staticImages[0]?.imagePath ?? ""}
-                      alt={staticImages[0]?.title ?? "Left image"}
+                      src={landingCarouselSlides[0]?.imagePath ?? "/landing-page/fingerprint-removebg-preview (1).png"}
+                      alt={landingCarouselSlides[0]?.title ?? "Left image"}
                       fill
                       draggable={false}
                       className="object-contain blur-[2px]"
@@ -255,8 +255,8 @@ export function MainCarousel({
                 <div className="flex items-center justify-center h-full p-2">
                   <div className="relative w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
                     <Image
-                      src={staticImages[2]?.imagePath ?? ""}
-                      alt={staticImages[2]?.title ?? "Right image"}
+                      src={landingCarouselSlides[2]?.imagePath ?? "/landing-page/fingerprint-removebg-preview (1).png"}
+                      alt={landingCarouselSlides[2]?.title ?? "Right image"}
                       fill
                       draggable={false}
                       className="object-contain blur-[2px]"
@@ -286,8 +286,8 @@ export function MainCarousel({
                 <div className="flex items-center justify-center h-full p-3">
                   <div className="relative w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
                     <Image
-                      src={staticImages[1]?.imagePath ?? ""}
-                      alt={staticImages[1]?.title ?? "Main image"}
+                      src={landingCarouselSlides[1]?.imagePath ?? "/landing-page/fingerprint-removebg-preview (1).png"}
+                      alt={landingCarouselSlides[1]?.title ?? "Main image"}
                       fill
                       draggable={false}
                       className="object-contain"
