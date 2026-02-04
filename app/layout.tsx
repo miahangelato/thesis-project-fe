@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased overflow-hidden">
+      <body className="antialiased overflow-hidden select-none">
         <SessionProvider>{children}</SessionProvider>
       </body>
     </html>

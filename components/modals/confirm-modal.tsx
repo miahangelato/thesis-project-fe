@@ -84,7 +84,7 @@ export function ConfirmModal({
           <div className="relative">
             <div
               className={cn(
-                "w-24 h-24 rounded-3xl flex items-center justify-center shadow-sm border border-teal-100 bg-linear-to-br from-slate-50 to-slate-100/50",
+                "w-32 h-32 rounded-3xl flex items-center justify-center shadow-sm border border-teal-100 bg-linear-to-br from-slate-50 to-slate-100/50",
                 iconWrapperClassName
               )}
             >
@@ -92,7 +92,7 @@ export function ConfirmModal({
             </div>
             <div
               className={cn(
-                "absolute inset-0 w-24 h-24 rounded-3xl border-4 opacity-20 animate-ping",
+                "absolute inset-0 w-32 h-32 rounded-3xl border-4 opacity-20 animate-ping",
                 iconRingClassName
               )}
             />
@@ -101,19 +101,19 @@ export function ConfirmModal({
 
         <h3
           id={titleId}
-          className="text-4xl font-bold text-slate-900 mb-4 tracking-tight leading-tight"
+          className="text-5xl font-bold text-slate-900 mb-4 tracking-tight leading-tight"
         >
           {title}
         </h3>
 
-        <div className="text-xl font-medium text-slate-600 mb-10 leading-relaxed max-w-sm mx-auto">
+        <div className="text-2xl font-medium text-slate-600 mb-10 leading-relaxed max-w-lg mx-auto">
           {description}
         </div>
 
         <div className="flex flex-col gap-4 w-full">
           <Button
             className={cn(
-              "w-full h-16 text-xl font-bold rounded-2xl bg-[#00c2cb] hover:bg-[#00adb5] text-white shadow-lg shadow-teal-100/50 transition-all transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
+              "w-full h-20 text-2xl font-bold rounded-2xl bg-[#00c2cb] hover:bg-[#00adb5] text-white shadow-lg shadow-teal-100/50 transition-all transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
               primaryButtonClassName
             )}
             onClick={onPrimary}
@@ -125,7 +125,7 @@ export function ConfirmModal({
           <Button
             variant={secondaryVariant}
             className={cn(
-              "w-full h-16 text-xl font-bold rounded-2xl bg-white border-2 border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all cursor-pointer",
+              "w-full h-20 text-2xl font-bold rounded-2xl bg-white border-2 border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all cursor-pointer",
               secondaryButtonClassName
             )}
             onClick={onSecondary}

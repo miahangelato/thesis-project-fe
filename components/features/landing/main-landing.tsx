@@ -8,29 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import Image from "next/image";
 
-// Add CSS for breathe animation
-const breatheAnimation = `
-  @keyframes breathe {
-    0%, 100% { 
-      transform: scale(1); 
-      box-shadow: 0 0 20px rgba(0, 194, 203, 0.3);
-    }
-    50% { 
-      transform: scale(1.02); 
-      box-shadow: 0 0 30px rgba(0, 194, 203, 0.5);
-    }
-  }
-`;
-
 interface MainLandingProps {
   onStartClick: () => void;
   loading?: boolean;
 }
 
-export function MainLanding({
-  onStartClick,
-  loading = false,
-}: MainLandingProps) {
+export function MainLanding({ onStartClick, loading = false }: MainLandingProps) {
   const cardShadow =
     "0 15px 35px rgba(0, 194, 203, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05)";
   const mainShadow =
@@ -38,42 +21,46 @@ export function MainLanding({
 
   const fingerprintImages = [
     "/landing-page/fingerprint-removebg-preview (1).png",
-    "/landing-page/fingerprint-removebg-preview (1).png", 
-    "/landing-page/fingerprint-removebg-preview (1).png"
+    "/landing-page/fingerprint-removebg-preview (1).png",
+    "/landing-page/fingerprint-removebg-preview (1).png",
   ];
 
   return (
     <div className="flex flex-col w-full">
-      <div className="relative w-full px-12 lg:px-18 xl:px-24 2xl:px-36 pt-12 pb-2 flex items-start justify-between select-none">
+      <div className="relative w-full px-12 lg:px-18 xl:px-24 2xl:px-36 pb-2 flex items-start justify-between select-none">
         {/* LEFT: content */}
-        <div className="w-[55%] flex flex-col h-[700px] pr-4 lg:pr-8 relative z-10 pb-12">
+        <div className="w-[69%] flex flex-col h-[700px] pr-4 lg:pr-8 relative z-10">
           {/* Static Text Content */}
           <div className="relative mt-32">
             <div className="inline-block mb-3">
-              <span className="text-[#00c2cb] font-semibold text-lg lg:text-xl bg-[#e4f7f8] px-4 py-2 rounded-full">
+              <span className="text-[#00c2cb] font-semibold text-lg lg:text-2xl bg-[#e4f7f8] px-4 py-2 rounded-full">
                 Recent insights
               </span>
             </div>
 
-            <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-800 mb-4 leading-tight">
-                Blood Group & Diabetes Risk Insights
-                <br />
-                Through Fingerprint Analysis
-              </h1>
+            <h1 className="text-2xl lg:text-3xl xl:text-5xl font-bold text-gray-800 mb-4 leading-tight">
+              Blood Group & Diabetes Risk Insights Through Fingerprint Analysis
+            </h1>
 
             <div className="space-y-3">
-              <p className="text-gray-600 text-base lg:text-lg xl:text-xl leading-relaxed select-none">
-                AI analyzes fingerprint patterns to explore potential correlations with blood group classification and diabetes risk.
-                This non-invasive system supports early awareness and health research with no needles or blood samples.
+              <p className="text-gray-600 text-base lg:text-lg xl:text-2xl leading-relaxed select-none">
+                AI analyzes fingerprint patterns to explore potential correlations with
+                blood group classification and diabetes risk. This non-invasive system
+                supports early awareness and health research with no needles or blood
+                samples.
               </p>
             </div>
 
             <div className="flex items-center space-x-6 mt-4 mb-4">
-              <span className="text-gray-500 text-base font-medium">🧠 Research-Based</span>
-              <span className="text-gray-300 text-lg">•</span>
-              <span className="text-gray-500 text-base font-medium">🔬 AI-Driven</span>
-              <span className="text-gray-300 text-lg">•</span>
-              <span className="text-gray-500 text-base font-medium">🩺 Awareness-Focused</span>
+              <span className="text-gray-500 text-xl font-medium">
+                🧠 Research-Based
+              </span>
+              <span className="text-gray-300 text-xl">•</span>
+              <span className="text-gray-500 text-xl font-medium">🔬 AI-Driven</span>
+              <span className="text-gray-300 text-xl">•</span>
+              <span className="text-gray-500 text-xl font-medium">
+                🩺 Awareness-Focused
+              </span>
             </div>
           </div>
 
@@ -81,11 +68,11 @@ export function MainLanding({
           <div className="flex flex-col items-start space-y-3 mt-6 z-20">
             <Button
               onClick={onStartClick}
-              className="bg-[#00c2cb] hover:bg-[#00adb5] text-white px-12 py-8 rounded-2xl transition-all duration-300 font-bold text-xl lg:text-2xl shadow-2xl transform hover:-translate-y-2 hover:scale-[1.03] cursor-pointer min-w-[300px]"
+              className="bg-[#00c2cb] hover:bg-[#00adb5] text-white px-16 py-12 rounded-2xl transition-all duration-300 font-bold text-xl lg:text-5xl shadow-2xl transform hover:-translate-y-2 hover:scale-[1.03] cursor-pointer min-w-[300px]"
               disabled={loading}
               style={{
-                animation: 'breathe 3s ease-in-out infinite',
-                boxShadow: '0 0 25px rgba(0, 194, 203, 0.4)'
+                animation: "breathe 3s ease-in-out infinite",
+                boxShadow: "0 0 25px rgba(0, 194, 203, 0.4)",
               }}
             >
               {loading ? (
@@ -101,13 +88,11 @@ export function MainLanding({
                 </div>
               ) : (
                 <div className="flex items-center">
-                  <Fingerprint className="mr-3 h-8 w-8" />
+                  <Fingerprint className="mr-3 h-14 w-14" />
                   <span>Click to Start</span>
                 </div>
               )}
             </Button>
-            
-
           </div>
         </div>
 
@@ -121,7 +106,8 @@ export function MainLanding({
                 style={{
                   width: "clamp(170px, 14vw, 210px)",
                   height: "clamp(240px, 20vw, 290px)",
-                  boxShadow: "0 25px 50px rgba(0, 194, 203, 0.25), 0 10px 25px rgba(0, 0, 0, 0.1)",
+                  boxShadow:
+                    "0 25px 50px rgba(0, 194, 203, 0.25), 0 10px 25px rgba(0, 0, 0, 0.1)",
                   zIndex: 1,
                   transform: "translateX(clamp(-250px, -15vw, -110px))",
                 }}
@@ -139,7 +125,8 @@ export function MainLanding({
                       sizes="(min-width: 1280px) 160px, (min-width: 1024px) 150px, 130px"
                       style={{
                         opacity: 0.8,
-                        filter: "brightness(1.1) contrast(1.1) saturate(1.2) drop-shadow(0 8px 16px rgba(0, 194, 203, 0.3))",
+                        filter:
+                          "brightness(1.1) contrast(1.1) saturate(1.2) drop-shadow(0 8px 16px rgba(0, 194, 203, 0.3))",
                       }}
                     />
                   </div>
@@ -152,7 +139,8 @@ export function MainLanding({
                 style={{
                   width: "clamp(170px, 14vw, 210px)",
                   height: "clamp(240px, 20vw, 290px)",
-                  boxShadow: "0 25px 50px rgba(0, 194, 203, 0.25), 0 10px 25px rgba(0, 0, 0, 0.1)",
+                  boxShadow:
+                    "0 25px 50px rgba(0, 194, 203, 0.25), 0 10px 25px rgba(0, 0, 0, 0.1)",
                   zIndex: 1,
                   transform: "translateX(clamp(260px, 13vw, 360px))",
                 }}
@@ -170,7 +158,8 @@ export function MainLanding({
                       sizes="(min-width: 1280px) 160px, (min-width: 1024px) 150px, 130px"
                       style={{
                         opacity: 0.8,
-                        filter: "brightness(1.1) contrast(1.1) saturate(1.2) drop-shadow(0 8px 16px rgba(0, 194, 203, 0.3))",
+                        filter:
+                          "brightness(1.1) contrast(1.1) saturate(1.2) drop-shadow(0 8px 16px rgba(0, 194, 203, 0.3))",
                       }}
                     />
                   </div>
@@ -183,7 +172,8 @@ export function MainLanding({
                 style={{
                   width: "clamp(260px, 22vw, 320px)",
                   height: "clamp(360px, 30vw, 440px)",
-                  boxShadow: "0 30px 60px rgba(0, 194, 203, 0.35), 0 15px 35px rgba(0, 0, 0, 0.15)",
+                  boxShadow:
+                    "0 30px 60px rgba(0, 194, 203, 0.35), 0 15px 35px rgba(0, 0, 0, 0.15)",
                   zIndex: 2,
                 }}
               >
@@ -199,7 +189,8 @@ export function MainLanding({
                       className="object-contain"
                       sizes="(min-width: 1280px) 240px, (min-width: 1024px) 220px, 200px"
                       style={{
-                        filter: "brightness(1.15) contrast(1.15) saturate(1.3) drop-shadow(0 15px 30px rgba(0, 194, 203, 0.4))",
+                        filter:
+                          "brightness(1.15) contrast(1.15) saturate(1.3) drop-shadow(0 15px 30px rgba(0, 194, 203, 0.4))",
                       }}
                     />
                   </div>

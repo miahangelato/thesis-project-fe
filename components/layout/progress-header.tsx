@@ -51,9 +51,9 @@ export function ProgressHeader({
           <Button
             variant="outline"
             onClick={handleBack}
-            className="flex items-center gap-2 h-14 px-6 rounded-xl border-2 border-red-300 text-red-700 font-semibold hover:bg-red-50 cursor-pointer text-lg"
+            className="flex items-center gap-2 h-16 px-12 rounded-xl border-2 border-red-300 text-red-700 font-semibold hover:bg-red-50 cursor-pointer text-3xl"
           >
-            <X size={18} />
+            <X size={30} className="pt-1" />
             End Session
           </Button>
         </div>

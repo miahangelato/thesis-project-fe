@@ -43,7 +43,7 @@ export function ResultsSidebar({
               </div>
               <div className="min-w-0">
                 <p
-                  className={`text-lg font-bold mb-1 ${
+                  className={`text-2xl font-bold mb-1 ${
                     result?.diabetes_risk?.toLowerCase() === "diabetic" ||
                     result?.diabetes_risk?.toLowerCase() === "high"
                       ? "text-red-700"
@@ -53,7 +53,7 @@ export function ResultsSidebar({
                   Diabetes Risk Assessment
                 </p>
                 <p
-                  className={`text-4xl font-bold truncate ${
+                  className={`text-5xl font-bold truncate ${
                     result?.diabetes_risk?.toLowerCase() === "diabetic" ||
                     result?.diabetes_risk?.toLowerCase() === "high"
                       ? "text-red-900"
@@ -74,7 +74,7 @@ export function ResultsSidebar({
                 }`}
               >
                 <p
-                  className={`text-base ${
+                  className={`text-2xl ${
                     result?.diabetes_risk?.toLowerCase() === "diabetic" ||
                     result?.diabetes_risk?.toLowerCase() === "high"
                       ? "text-red-600"
@@ -96,17 +96,17 @@ export function ResultsSidebar({
                 <Droplets className="w-6 h-6 text-white" />
               </div>
               <div className="min-w-0">
-                <p className="text-lg font-bold text-blue-700 mb-1">
+                <p className="text-2xl font-bold text-blue-700 mb-1">
                   Predicted Blood Type
                 </p>
-                <p className="text-4xl font-bold text-blue-900 truncate">
+                <p className="text-5xl font-bold text-blue-900 truncate">
                   {bloodGroupResult?.predicted_blood_group || "Unknown"}
                 </p>
               </div>
             </div>
             {bloodGroupResult?.confidence && (
               <div className="mt-3 pt-3 border-t border-blue-200">
-                <p className="text-base text-blue-600">
+                <p className="text-2xl text-blue-600">
                   Confidence Level:{" "}
                   <span className="font-bold text-xl">
                     {(bloodGroupResult.confidence * 100).toFixed(1)}%
@@ -118,64 +118,64 @@ export function ResultsSidebar({
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <h4 className="text-xl font-bold text-slate-800 mb-4 uppercase tracking-wide flex items-center border-b pb-2">
-            <User className="w-6 h-6 mr-2 text-slate-500" />
+          <h4 className="text-3xl font-bold text-slate-800 mb-4 uppercase tracking-wide flex items-center border-b pb-2">
+            <User className="w-8 h-8 mr-2 text-slate-500" />
             Demographics
           </h4>
           {demographics ? (
             <div className="grid grid-cols-2 gap-x-8 gap-y-5 pt-2 px-6">
               <div className="space-y-5">
                 <div className="flex flex-col">
-                  <span className="text-base text-slate-500 font-bold mb-1 uppercase tracking-wider">
+                  <span className="text-2xl text-slate-500 font-bold mb-1 uppercase tracking-wider">
                     Age
                   </span>
-                  <span className="text-2xl font-bold text-slate-900">
+                  <span className="text-3xl font-bold text-slate-900">
                     {demographics?.age || "N/A"}{" "}
-                    <span className="text-lg text-slate-500 font-normal">years</span>
+                    <span className="text-xl text-slate-500 font-normal">years</span>
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-base text-slate-500 font-bold mb-1 uppercase tracking-wider">
+                  <span className="text-2xl text-slate-500 font-bold mb-1 uppercase tracking-wider">
                     Weight
                   </span>
-                  <span className="text-2xl font-bold text-slate-900">
+                  <span className="text-3xl font-bold text-slate-900">
                     {demographics?.weight_kg || "N/A"}{" "}
-                    <span className="text-lg text-slate-500 font-normal">kg</span>
+                    <span className="text-xl text-slate-500 font-normal">kg</span>
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-base text-slate-500 font-bold mb-1 uppercase tracking-wider">
+                  <span className="text-2xl text-slate-500 font-bold mb-1 uppercase tracking-wider">
                     Height
                   </span>
-                  <span className="text-2xl font-bold text-slate-900">
+                  <span className="text-3xl font-bold text-slate-900">
                     {demographics?.height_cm || "N/A"}{" "}
-                    <span className="text-lg text-slate-500 font-normal">cm</span>
+                    <span className="text-xl text-slate-500 font-normal">cm</span>
                   </span>
                 </div>
               </div>
 
               <div className="space-y-5">
                 <div className="flex flex-col">
-                  <span className="text-base text-slate-500 font-bold mb-1 uppercase tracking-wider">
+                  <span className="text-2xl text-slate-500 font-bold mb-1 uppercase tracking-wider">
                     Gender
                   </span>
-                  <span className="text-2xl font-bold text-slate-900 capitalize">
+                  <span className="text-3xl font-bold text-slate-900 capitalize">
                     {demographics?.gender || "N/A"}
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-base text-slate-500 font-bold mb-1 uppercase tracking-wider">
+                  <span className="text-2xl text-slate-500 font-bold mb-1 uppercase tracking-wider">
                     Blood Type
                   </span>
-                  <span className="text-2xl font-bold text-slate-900 capitalize">
+                  <span className="text-3xl font-bold text-slate-900 capitalize">
                     {demographics?.blood_type || "Unknown"}
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-base text-slate-500 font-bold mb-1 uppercase tracking-wider">
+                  <span className="text-2xl text-slate-500 font-bold mb-1 uppercase tracking-wider">
                     BMI
                   </span>
-                  <span className="text-2xl font-bold text-slate-900">
+                  <span className="text-3xl font-bold text-slate-900">
                     {participantData?.bmi?.toFixed(1) || "N/A"}
                   </span>
                 </div>

@@ -113,7 +113,7 @@ export function ScanAssistantPanel({
       className={`border-2 rounded-xl ${borderColors[status]} ${bgColors[status]} transition-all duration-300`}
     >
       <CardHeader className="pb-2 pt-3 px-4">
-        <CardTitle className="text-lg font-bold text-gray-800">
+        <CardTitle className="text-2xl font-bold text-gray-800">
           {fingerName} ({fingerIndex + 1}/{totalFingers})
         </CardTitle>
       </CardHeader>

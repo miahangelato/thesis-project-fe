@@ -2,7 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Activity, Radio, Brain, ClipboardCheck, RefreshCcw, Clock, AlertTriangle } from "lucide-react";
+import {
+  Check,
+  Activity,
+  Radio,
+  Brain,
+  ClipboardCheck,
+  RefreshCcw,
+  Clock,
+  AlertTriangle,
+} from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
@@ -44,26 +53,30 @@ const DEFAULT_STEPS: Step[] = [
   },
 ];
 
-const CustomStatusIcon = ({ 
-  status, 
-  Icon 
-}: { 
-  status: Step["status"]; 
-  Icon?: React.ElementType 
+const CustomStatusIcon = ({
+  status,
+  Icon,
+}: {
+  status: Step["status"];
+  Icon?: React.ElementType;
 }) => {
   const StepIcon = Icon || Activity;
 
   return (
-    <div className={cn(
-      "w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-500",
-      status === "completed" ? "bg-teal-100 text-teal-600" :
-      status === "current" ? "bg-teal-100/60 text-teal-500" :
-      "bg-slate-100 text-slate-400"
-    )}>
+    <div
+      className={cn(
+        "w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-500",
+        status === "completed"
+          ? "bg-teal-100 text-teal-600"
+          : status === "current"
+            ? "bg-teal-100/60 text-teal-500"
+            : "bg-slate-100 text-slate-400"
+      )}
+    >
       {status === "current" ? (
-        <StepIcon className="w-5 h-5 animate-spin" style={{ animationDuration: "3s" }} />
+        <StepIcon className="w-10 h-10 animate-spin" style={{ animationDuration: "3s" }} />
       ) : (
-        <StepIcon className="w-5 h-5" />
+        <StepIcon className="w-10 h-10" />
       )}
     </div>
   );
@@ -78,7 +91,7 @@ export function FullScreenLoader({
   useDefaultSteps = true,
   isError = false,
 }: FullScreenLoaderProps) {
-  const loaderSteps = steps.length ? steps : (useDefaultSteps ? DEFAULT_STEPS : []);
+  const loaderSteps = steps.length ? steps : useDefaultSteps ? DEFAULT_STEPS : [];
 
   return (
     <AnimatePresence>
@@ -89,7 +102,7 @@ export function FullScreenLoader({
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-10000 flex items-center justify-center bg-white/90 backdrop-blur-md overflow-hidden transition-all duration-500"
         >
-          <div className="text-center px-8 w-full max-w-lg">
+          <div className="text-center px-8 w-full max-w-3xl">
             <div className="relative mb-12 flex items-center justify-center">
               {isError ? (
                 <div className="w-24 h-24 rounded-full bg-red-50 border border-red-100 flex items-center justify-center">
@@ -105,16 +118,17 @@ export function FullScreenLoader({
               )}
             </div>
 
-            <h2 className={cn(
-              "text-3xl font-bold mb-3 tracking-tight",
-              isError ? "text-red-900" : "text-slate-900"
-            )}>
+            <h2
+              className={cn(
+                "text-5xl font-bold mb-3 tracking-tight",
+                isError ? "text-red-900" : "text-slate-900"
+              )}
+            >
               {title}
             </h2>
-            <p className={cn(
-              "mb-10 text-lg",
-              isError ? "text-red-700" : "text-slate-700"
-            )}>
+            <p
+              className={cn("mb-10 text-xl", isError ? "text-red-700" : "text-slate-700")}
+            >
               {subtitle}
             </p>
 
@@ -127,23 +141,32 @@ export function FullScreenLoader({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
                     className={cn(
-                      "flex items-center gap-4 border rounded-xl p-4 backdrop-blur-sm transition-all duration-500",
-                      step.status === "current" ? "bg-teal-50 border-teal-200 shadow-sm" :
-                      step.status === "completed" ? "bg-teal-50/50 border-teal-100" :
-                      "bg-slate-50 border-slate-100 opacity-60"
+                      "flex items-center gap-4 border rounded-xl p-6 backdrop-blur-sm transition-all duration-500 w-full",
+                      step.status === "current"
+                        ? "bg-teal-50 border-teal-200 shadow-sm"
+                        : step.status === "completed"
+                          ? "bg-teal-50/50 border-teal-100"
+                          : "bg-slate-50 border-slate-100 opacity-60"
                     )}
                   >
                     <CustomStatusIcon status={step.status} Icon={step.icon} />
-                    
-                    <div>
-                      <p className={cn(
-                        "font-medium transition-colors duration-500",
-                        step.status === "pending" ? "text-slate-400" : "text-slate-900"
-                      )}>
+
+                    <div className="flex flex-col gap-3">
+                      <h2
+                        className={cn(
+                          "text-4xl font-semibold tracking-tight",
+                          isError ? "text-red-900" : "text-slate-900"
+                        )}
+                      >
                         {step.label}
-                      </p>
+                      </h2>
                       {step.description && (
-                        <p className="text-xs text-slate-600">
+                        <p
+                          className={cn(
+                            "text-2xl",
+                            isError ? "text-red-700" : "text-slate-700"
+                          )}
+                        >
                           {step.description}
                         </p>
                       )}
@@ -154,7 +177,7 @@ export function FullScreenLoader({
             )}
 
             {footerText && (
-              <p className="text-slate-600 text-sm mt-8 animate-pulse font-medium">
+              <p className="text-slate-600 text-xl mt-8 animate-pulse font-medium">
                 {footerText}
               </p>
             )}

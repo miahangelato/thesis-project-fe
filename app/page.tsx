@@ -75,32 +75,29 @@ export default function LandingPage() {
       </div>
 
       <div className="relative flex-1 w-full min-h-0 flex items-center">
-        <MainLanding
-          onStartClick={handleStartClick}
-          loading={loading}
-        />
+        <MainLanding onStartClick={handleStartClick} loading={loading} />
       </div>
 
       <div className="w-full page-container pb-2 -mt-8 grid grid-cols-4 gap-6 z-10 select-none">
         {features.map((feature, index) => (
           <div
             key={index}
-            className="bg-white rounded-xl p-6 border-2 border-[#00c2cb] hover:shadow-xl transition-all duration-200 hover:border-[#00adb5] hover:-translate-y-1"
+            className="bg-white rounded-xl p-6 border-2 border-[#00c2cb] hover:shadow-xl transition-all duration-200 hover:border-[#00adb5] hover:-translate-y-1 overflow-hidden"
           >
-            <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-[#e4f7f8] mb-4">
-              <span className="text-[#00c2cb] text-3xl">{feature.icon}</span>
+            <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#e4f7f8] mb-4">
+              <span className="text-[#00c2cb] text-6xl">{feature.icon}</span>
             </div>
-            <h3 className="text-xl lg:text-2xl font-semibold mb-3 text-gray-800">
+            <h3 className="text-xl lg:text-4xl font-semibold mb-3 text-gray-800 wrap-break-word break-all whitespace-normal">
               {feature.title}
             </h3>
-            <p className="text-lg lg:text-xl text-gray-600 leading-normal">
+            <p className="text-lg lg:text-2xl text-gray-600 leading-normal whitespace-normal">
               {feature.description}
             </p>
           </div>
         ))}
       </div>
 
-      <div className="py-2 z-30">
+      <div className="py-5 z-30">
         <Footer />
       </div>
     </div>

@@ -187,18 +187,18 @@ export default function DemographicsPage() {
                 <div className="flex flex-col flex-3 min-w-0 gap-4">
                   <div className="bg-white rounded-2xl p-4 shadow-sm border-2 border-slate-100 hover:shadow-md transition-shadow select-none">
                     <div className="flex items-start mb-3">
-                      <div className="w-10 h-10 bg-linear-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center mr-3 shrink-0">
-                        <User className="h-5 w-5 text-teal-600" />
+                      <div className="w-14 h-14 bg-linear-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center mr-3 shrink-0">
+                        <User className="h-10 w-10 text-teal-600" />
                       </div>
 
                       <div className="flex-1">
-                        <h2 className="text-3xl font-bold text-slate-800 leading-tight">
+                        <h2 className="text-5xl font-bold text-slate-800 leading-tight">
                           Your Health Context
                         </h2>
-                        <p className="text-teal-600 text-lg font-semibold leading-tight">
+                        <p className="text-teal-600 text-xl font-semibold leading-tight">
                           Background information for screening
                         </p>
-                        <p className="text-slate-500 text-lg leading-relaxed mt-1">
+                        <p className="text-slate-500 text-xl leading-relaxed mt-1">
                           This information helps us better understand patterns in your
                           results.
                         </p>
@@ -207,7 +207,7 @@ export default function DemographicsPage() {
                       {isBasicInfoComplete && !hasErrors && (
                         <div className="shrink-0 ml-3">
                           <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                            <CheckCircle className="h-6 w-6 text-green-600" />
+                            <CheckCircle className="h-10 w-10 text-green-600" />
                           </div>
                         </div>
                       )}
@@ -218,12 +218,12 @@ export default function DemographicsPage() {
                         <div className="flex items-center gap-2">
                           <Label
                             htmlFor="age"
-                            className="text-lg font-semibold text-slate-900 flex items-center gap-1.5"
+                            className="text-3xl font-semibold text-slate-900 flex items-center gap-1.5"
                           >
                             <span className="text-lg">🎂</span>
                             <span>Age</span>
                           </Label>
-                          <span className="text-red-500 text-lg">*</span>
+                          <span className="text-red-500 text-3xl">*</span>
                           <InfoTooltip text="Helps us adjust results for age-related patterns." />
                         </div>
 
@@ -260,8 +260,8 @@ export default function DemographicsPage() {
                           }`}
                         />
                         {getFieldError("age") && (
-                          <p className="text-sm text-red-600 mt-1 flex items-start gap-1">
-                            <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                          <p className="text-md text-red-600 mt-1 flex items-start gap-1">
+                            <AlertTriangle className="w-4 h-4 mt-1 shrink-0" />
                             <span>{getFieldError("age")!.message}</span>
                           </p>
                         )}
@@ -277,7 +277,7 @@ export default function DemographicsPage() {
                         <div className="flex items-center gap-2">
                           <Label
                             htmlFor="weight"
-                            className="text-lg font-semibold text-slate-900 flex items-center gap-1.5"
+                            className="text-3xl font-semibold text-slate-900 flex items-center gap-1.5 wrap-break-words"
                           >
                             <span className="text-lg">⚖️</span>
                             <span>Weight</span>
@@ -319,14 +319,14 @@ export default function DemographicsPage() {
                           }`}
                         />
                         {getFieldError("weight") && (
-                          <p className="text-sm text-red-600 mt-1 flex items-start gap-1">
-                            <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                          <p className="text-xl text-red-600 mt-1 flex items-start gap-1">
+                            <AlertTriangle className="w-4 h-4 mt-1 shrink-0" />
                             <span>{getFieldError("weight")!.message}</span>
                           </p>
                         )}
                         {!getFieldError("weight") && getFieldWarning("weight") && (
-                          <p className="text-sm text-amber-600 mt-1 flex items-start gap-1">
-                            <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                          <p className="text-xl text-amber-600 mt-1 flex items-start gap-1">
+                            <AlertTriangle className="w-4 h-4 mt-1 shrink-0" />
                             <span>{getFieldWarning("weight")!.message}</span>
                           </p>
                         )}
@@ -337,7 +337,7 @@ export default function DemographicsPage() {
                             onClick={() => {
                               if (weightUnit === "lb") switchWeightUnit("kg");
                             }}
-                            className={`h-9 px-6 text-lg font-semibold rounded-md transition-all cursor-pointer ${
+                            className={`h-9 px-6 text-2xl font-semibold rounded-md transition-all cursor-pointer ${
                               weightUnit === "kg"
                                 ? "bg-[#00c2cb] text-white shadow-sm"
                                 : "bg-transparent text-slate-600 hover:text-slate-900"
@@ -350,7 +350,7 @@ export default function DemographicsPage() {
                             onClick={() => {
                               if (weightUnit === "kg") switchWeightUnit("lb");
                             }}
-                            className={`h-9 px-6 text-lg font-semibold rounded-md transition-all cursor-pointer ${
+                            className={`h-9 px-6 text-2xl font-semibold rounded-md transition-all cursor-pointer ${
                               weightUnit === "lb"
                                 ? "bg-[#00c2cb] text-white shadow-sm"
                                 : "bg-transparent text-slate-600 hover:text-slate-900"
@@ -365,16 +365,94 @@ export default function DemographicsPage() {
                         <div className="flex items-center gap-2">
                           <Label
                             htmlFor="height"
-                            className="text-lg font-semibold text-slate-900 flex items-center gap-1.5"
+                            className="text-3xl font-semibold text-slate-900 flex items-center gap-1.5 wrap-break-words"
                           >
-                            <span className="text-lg">📏</span>
+                            <span className="text-2xl">📏</span>
                             <span>Height</span>
                           </Label>
                           <span className="text-red-500 text-lg">*</span>
                           <InfoTooltip text="Used together with weight for basic calculations." />
                         </div>
 
-                        {heightUnit === "cm" ? (
+                        {heightUnit === "ftin" ? (
+                          <>
+                            <div className="flex gap-3 items-center">
+                              <div className="flex items-center gap-2 flex-1">
+                                <Input
+                                  id="height-ft"
+                                  type="text"
+                                  inputMode="numeric"
+                                  placeholder="5"
+                                  autoComplete="off"
+                                  readOnly
+                                  value={heightFt}
+                                  onFocus={() => handleFieldFocus("heightFt")}
+                                  onClick={() => handleFieldFocus("heightFt")}
+                                  onBlur={handleFieldBlur}
+                                  onChange={(e) => {
+                                    const val = e.target.value;
+                                    if (/^\d*$/.test(val)) setHeightFt(val);
+                                  }}
+                                  className={`h-14 text-xl font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer ${
+                                    getFieldError("height")
+                                      ? "border-red-400 bg-red-50 text-red-700"
+                                      : heightFt
+                                        ? "border-green-400 bg-green-50 text-green-700"
+                                        : "border-slate-300 bg-white hover:border-teal-400"
+                                  }`}
+                                />
+                                <span className="text-base text-slate-600 font-medium">
+                                  ft
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-2 flex-1">
+                                <Input
+                                  id="height-in"
+                                  type="text"
+                                  inputMode="numeric"
+                                  placeholder="0"
+                                  autoComplete="off"
+                                  readOnly
+                                  value={heightIn}
+                                  onFocus={() => handleFieldFocus("heightIn")}
+                                  onClick={() => handleFieldFocus("heightIn")}
+                                  onBlur={handleFieldBlur}
+                                  onChange={(e) => {
+                                    const val = e.target.value;
+                                    if (
+                                      /^\d*$/.test(val) &&
+                                      parseInt(val || "0", 10) < 12
+                                    )
+                                      setHeightIn(val);
+                                  }}
+                                  className={`h-14 text-xl font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer ${
+                                    getFieldError("height")
+                                      ? "border-red-400 bg-red-50 text-red-700"
+                                      : heightIn
+                                        ? "border-green-400 bg-green-50 text-green-700"
+                                        : "border-slate-300 bg-white hover:border-teal-400"
+                                  }`}
+                                />
+                                <span className="text-base text-slate-600 font-medium">
+                                  in
+                                </span>
+                              </div>
+                            </div>
+                            {getFieldError("height") && (
+                              <p className="text-xl text-red-600 mt-1 flex items-start gap-1">
+                                <AlertTriangle className="w-4 h-4 mt-1 shrink-0" />
+                                <span>{getFieldError("height")!.message}</span>
+                              </p>
+                            )}
+                            {!getFieldError("height") && getFieldWarning("height") && (
+                              <p className="text-xl text-amber-600 mt-1 flex items-start gap-1">
+                                <AlertTriangle className="w-4 h-4 mt-1 shrink-0" />
+                                <span>{getFieldWarning("height")!.message}</span>
+                              </p>
+                            )}
+                          </>
+                        ) : (
                           <>
                             <Input
                               id="height"
@@ -409,92 +487,14 @@ export default function DemographicsPage() {
                               }`}
                             />
                             {getFieldError("height") && (
-                              <p className="text-sm text-red-600 mt-1 flex items-start gap-1">
-                                <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                              <p className="text-xl text-red-600 mt-1 flex items-start gap-1">
+                                <AlertTriangle className="w-4 h-4 mt-1 shrink-0" />
                                 <span>{getFieldError("height")!.message}</span>
                               </p>
                             )}
                             {!getFieldError("height") && getFieldWarning("height") && (
-                              <p className="text-sm text-amber-600 mt-1 flex items-start gap-1">
-                                <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
-                                <span>{getFieldWarning("height")!.message}</span>
-                              </p>
-                            )}
-                          </>
-                        ) : (
-                          <>
-                            <div className="flex gap-3 items-center">
-                              <div className="flex items-center gap-2 flex-1">
-                                <Input
-                                  id="height-ft"
-                                  type="text"
-                                  inputMode="numeric"
-                                  placeholder="5"
-                                  autoComplete="off"
-                                  readOnly
-                                  value={heightFt}
-                                  onFocus={() => handleFieldFocus("heightFt")}
-                                  onClick={() => handleFieldFocus("heightFt")}
-                                  onBlur={handleFieldBlur}
-                                  onChange={(e) => {
-                                    const val = e.target.value;
-                                    if (/^\d*$/.test(val)) setHeightFt(val);
-                                  }}
-                                  className={`h-14 text-lg font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer ${
-                                    getFieldError("height")
-                                      ? "border-red-400 bg-red-50 text-red-700"
-                                      : heightFt
-                                        ? "border-green-400 bg-green-50 text-green-700"
-                                        : "border-slate-300 bg-white hover:border-teal-400"
-                                  }`}
-                                />
-                                <span className="text-base text-slate-600 font-medium">
-                                  ft
-                                </span>
-                              </div>
-
-                              <div className="flex items-center gap-2 flex-1">
-                                <Input
-                                  id="height-in"
-                                  type="text"
-                                  inputMode="numeric"
-                                  placeholder="0"
-                                  autoComplete="off"
-                                  readOnly
-                                  value={heightIn}
-                                  onFocus={() => handleFieldFocus("heightIn")}
-                                  onClick={() => handleFieldFocus("heightIn")}
-                                  onBlur={handleFieldBlur}
-                                  onChange={(e) => {
-                                    const val = e.target.value;
-                                    if (
-                                      /^\d*$/.test(val) &&
-                                      parseInt(val || "0", 10) < 12
-                                    )
-                                      setHeightIn(val);
-                                  }}
-                                  className={`h-14 text-lg font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer ${
-                                    getFieldError("height")
-                                      ? "border-red-400 bg-red-50 text-red-700"
-                                      : heightIn
-                                        ? "border-green-400 bg-green-50 text-green-700"
-                                        : "border-slate-300 bg-white hover:border-teal-400"
-                                  }`}
-                                />
-                                <span className="text-base text-slate-600 font-medium">
-                                  in
-                                </span>
-                              </div>
-                            </div>
-                            {getFieldError("height") && (
-                              <p className="text-sm text-red-600 mt-1 flex items-start gap-1">
-                                <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
-                                <span>{getFieldError("height")!.message}</span>
-                              </p>
-                            )}
-                            {!getFieldError("height") && getFieldWarning("height") && (
-                              <p className="text-sm text-amber-600 mt-1 flex items-start gap-1">
-                                <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                              <p className="text-xl text-amber-600 mt-1 flex items-start gap-1">
+                                <AlertTriangle className="w-4 h-4 mt-1 shrink-0" />
                                 <span>{getFieldWarning("height")!.message}</span>
                               </p>
                             )}
@@ -505,28 +505,28 @@ export default function DemographicsPage() {
                           <button
                             type="button"
                             onClick={() => {
-                              if (heightUnit === "ftin") switchHeightUnit("cm");
-                            }}
-                            className={`h-9 px-6 text-lg font-semibold rounded-md transition-all cursor-pointer ${
-                              heightUnit === "cm"
-                                ? "bg-[#00c2cb] text-white shadow-sm"
-                                : "bg-transparent text-slate-600 hover:text-slate-900"
-                            }`}
-                          >
-                            cm
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
                               if (heightUnit === "cm") switchHeightUnit("ftin");
                             }}
-                            className={`h-9 px-6 text-lg font-semibold rounded-md transition-all cursor-pointer ${
+                            className={`h-9 px-6 text-2xl font-semibold rounded-md transition-all cursor-pointer ${
                               heightUnit === "ftin"
                                 ? "bg-[#00c2cb] text-white shadow-sm"
                                 : "bg-transparent text-slate-600 hover:text-slate-900"
                             }`}
                           >
                             ft/in
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (heightUnit === "ftin") switchHeightUnit("cm");
+                            }}
+                            className={`h-9 px-6 text-2xl font-semibold rounded-md transition-all cursor-pointer ${
+                              heightUnit === "cm"
+                                ? "bg-[#00c2cb] text-white shadow-sm"
+                                : "bg-transparent text-slate-600 hover:text-slate-900"
+                            }`}
+                          >
+                            cm
                           </button>
                         </div>
                       </div>
@@ -537,9 +537,9 @@ export default function DemographicsPage() {
                         <div className="flex items-center gap-2">
                           <Label
                             htmlFor="gender"
-                            className="text-lg font-semibold text-slate-900 flex items-center gap-1.5"
+                            className="text-3xl font-semibold text-slate-900 flex items-center gap-1.5 wrap-break-words"
                           >
-                            <span className="text-lg">🚻</span>
+                            <span className="text-2xl">🚻</span>
                             <span>Gender</span>
                           </Label>
                           <span className="text-red-500 text-lg">*</span>
@@ -554,7 +554,7 @@ export default function DemographicsPage() {
                         >
                           <SelectTrigger
                             id="gender"
-                            className={`h-14 w-full text-lg font-bold rounded-lg border-2 transition-all duration-200 bg-white flex items-center justify-between px-4 cursor-pointer ${
+                            className={`h-14 w-full text-2xl font-bold rounded-lg border-2 transition-all duration-200 bg-white flex items-center justify-between px-4 cursor-pointer ${
                               formData.gender
                                 ? "border-green-400 bg-green-50 text-green-700"
                                 : "border-slate-300 hover:border-teal-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
@@ -562,7 +562,7 @@ export default function DemographicsPage() {
                           >
                             <SelectValue placeholder="Select gender" />
                           </SelectTrigger>
-                          <SelectContent className="rounded-lg border-2 border-slate-200">
+                          <SelectContent className="text-2xl rounded-lg border-2 border-slate-200">
                             <SelectItem
                               value="prefer_not_to_say"
                               className="cursor-pointer"
@@ -583,9 +583,9 @@ export default function DemographicsPage() {
                         <div className="flex items-center gap-2">
                           <Label
                             htmlFor="blood_type"
-                            className="text-lg font-semibold text-slate-900 flex items-center gap-1.5"
+                            className="text-3xl font-semibold text-slate-900 flex items-center gap-1.5 wrap-break-words"
                           >
-                            <span className="text-lg">🩸</span>
+                            <span className="text-2xl">🩸</span>
                             <span>Blood Type</span>
                           </Label>
                           <span className="text-slate-600 text-base">(Optional)</span>
@@ -599,7 +599,7 @@ export default function DemographicsPage() {
                           }
                         >
                           <SelectTrigger
-                            className={`h-14 w-full text-lg font-bold rounded-lg border-2 transition-all duration-200 bg-white flex items-center justify-between px-4 cursor-pointer ${
+                            className={`h-14 w-full text-xl font-bold rounded-lg border-2 transition-all duration-200 bg-white flex items-center justify-between px-4 cursor-pointer ${
                               formData.blood_type !== "unknown"
                                 ? "border-green-400 bg-green-50 text-green-700"
                                 : "border-slate-300 hover:border-teal-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
@@ -607,7 +607,7 @@ export default function DemographicsPage() {
                           >
                             <SelectValue placeholder="Select if known" />
                           </SelectTrigger>
-                          <SelectContent className="rounded-lg border-2 border-slate-200">
+                          <SelectContent className="text-2xl rounded-lg border-2 border-slate-200">
                             <SelectItem value="unknown" className="cursor-pointer">
                               Unknown
                             </SelectItem>
@@ -635,14 +635,14 @@ export default function DemographicsPage() {
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-lg">📊</span>
-                          <span className="text-lg font-bold text-slate-700">
+                          <span className="text-2xl">📊</span>
+                          <span className="text-3xl font-bold text-slate-700 wrap-break-words">
                             BMI estimate
                           </span>
                           <InfoTooltip text="BMI is a general indicator based on height and weight. It does not account for muscle mass or body composition." />
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-lg font-black text-slate-900">
+                          <span className="text-xl font-black text-slate-900 wrap-break-words">
                             {bmiValue || "--.-"}
                           </span>
                           {bmiCategory && (
@@ -663,8 +663,8 @@ export default function DemographicsPage() {
                         </div>
                       </div>
                       {getFieldError("bmi") && (
-                        <p className="text-sm text-red-600 mt-1 flex items-start gap-1 px-4">
-                          <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                        <p className="text-xl text-red-600 mt-1 flex items-start gap-1 px-4">
+                          <AlertTriangle className="w-4 h-4 mt-1 shrink-0" />
                           <span>{getFieldError("bmi")!.message}</span>
                         </p>
                       )}
@@ -692,7 +692,7 @@ export default function DemographicsPage() {
                       />
                       <Label
                         htmlFor="donation-opt-in"
-                        className="text-xl font-bold text-slate-800 cursor-pointer"
+                        className="text-3xl font-bold text-slate-800 cursor-pointer wrap-break-words"
                       >
                         Show blood donation centers later
                       </Label>
@@ -701,17 +701,18 @@ export default function DemographicsPage() {
                   </div>
                 </div>
 
+                {/* Right */}
                 <div className="flex flex-col flex-2 gap-4 select-none">
                   <StaticInfoPanel />
 
                   <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
                     <div className="flex items-start gap-4">
-                      <Shield className="h-7 w-7 text-slate-500 mt-1 shrink-0" />
+                      <Shield className="h-8 w-8 text-slate-500 mt-1 shrink-0" />
                       <div>
-                        <strong className="text-2xl text-slate-900 block mb-1">
+                        <strong className="text-3xl text-slate-900 block mb-1">
                           Legal Disclaimer
                         </strong>
-                        <p className="text-lg text-slate-600 leading-relaxed">
+                        <p className="text-xl text-slate-600 leading-relaxed">
                           This tool provides predictive insights based on fingerprint and
                           demographic data. It does not replace laboratory tests or
                           medical diagnosis. Always consult healthcare professionals.
@@ -721,12 +722,12 @@ export default function DemographicsPage() {
                   </div>
 
                   <div className="bg-red-50 border-2 border-red-500 rounded-2xl px-5 py-3 flex gap-4 items-start shadow-sm">
-                    <AlertTriangle className="h-7 w-7 text-red-600 shrink-0 mt-0.5" />
+                    <AlertTriangle className="h-8 w-8 text-red-600 shrink-0 mt-2" />
                     <div>
-                      <strong className="block text-2xl font-bold text-red-950 mb-1">
+                      <strong className="block text-4xl font-bold text-red-950 mb-1">
                         Important
                       </strong>
-                      <p className="text-lg text-red-900 leading-relaxed">
+                      <p className="text-2xl text-red-900 leading-relaxed">
                         This is a screening tool — not a medical diagnosis.
                       </p>
                     </div>
@@ -749,9 +750,9 @@ export default function DemographicsPage() {
                   type="button"
                   variant="ghost"
                   onClick={() => setShowClearConfirmModal(true)}
-                  className="flex items-center gap-2 h-14 px-6 text-lg font-bold text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer rounded-xl transition-all"
+                  className="flex items-center gap-2 h-14 px-6 text-3xl font-bold text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer rounded-xl transition-all"
                 >
-                  <X size={20} className="stroke-[2.5]" />
+                  <X size={30} className="stroke-[2.5]" />
                   Clear Fields
                 </Button>
               }

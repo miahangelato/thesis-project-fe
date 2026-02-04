@@ -25,10 +25,10 @@ export function Footer({
         fixed ? "absolute bottom-0 left-0 right-0 z-10" : ""
       } ${className}`}
     >
-      <div className="text-xs text-gray-500">© 2025 Team 3. All rights reserved.</div>
+      <div className="text-md text-gray-500">© 2025 Team 3. All rights reserved.</div>
 
       {customContent && (
-        <div className="flex items-center text-xs text-gray-500">{customContent}</div>
+        <div className="flex items-center text-md text-gray-500">{customContent}</div>
       )}
     </footer>
   );

@@ -1,5 +1,13 @@
 "use client";
-import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  ReactNode,
+} from "react";
 import { storage } from "@/lib/storage";
 import { STEPS } from "@/lib/constants";
 import {
@@ -34,7 +42,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const sessionActive = !!sessionId;
   const [expirationReason, setExpirationReason] = useState<string | null>(null);
   const router = useRouter();
-  const privacyManagerRef = useRef<ReturnType<typeof getPrivacyCleanupManager> | null>(null);
+  const privacyManagerRef = useRef<ReturnType<typeof getPrivacyCleanupManager> | null>(
+    null
+  );
 
   useEffect(() => {
     if (typeof window !== "undefined" && !privacyManagerRef.current) {
@@ -52,10 +62,19 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setCurrentStepState(STEPS.LANDING);
     setExpirationReason(null);
 
-    // Clear any stale data immediately
+    // Clear any stale data immediately, but preserve in-progress scanned fingerprints
     storage.clear();
     if (typeof window !== "undefined") {
-      window.sessionStorage.clear();
+      try {
+        // Preserve any in-progress scanned fingerprints so users don't lose scans
+        const preserved = window.sessionStorage.getItem("scanned_fingerprints");
+        window.sessionStorage.clear();
+        if (preserved) {
+          window.sessionStorage.setItem("scanned_fingerprints", preserved);
+        }
+      } catch (e) {
+        // ignore storage errors
+      }
     }
 
     setIsLoading(false);

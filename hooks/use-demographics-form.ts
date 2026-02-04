@@ -69,10 +69,43 @@ export type BmiCategory = {
 
 export function useDemographicsForm() {
   const [weightUnit, setWeightUnit] = useState<WeightUnit>("kg");
-  const [heightUnit, setHeightUnit] = useState<HeightUnit>("cm");
+  const [heightUnit, setHeightUnit] = useState<HeightUnit>("ftin");
 
-  const [heightFt, setHeightFt] = useState("");
-  const [heightIn, setHeightIn] = useState("");
+  const [heightFt, setHeightFt] = useState(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const saved = sessionStorage.getItem("demographics");
+        if (saved) {
+          const data = JSON.parse(saved);
+          if (data.height_cm) {
+            const { feet, inches } = cmToFtIn(Number(data.height_cm));
+            return String(feet);
+          }
+        }
+      }
+    } catch (error) {
+      /* ignore */
+    }
+    return "";
+  });
+
+  const [heightIn, setHeightIn] = useState(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const saved = sessionStorage.getItem("demographics");
+        if (saved) {
+          const data = JSON.parse(saved);
+          if (data.height_cm) {
+            const { feet, inches } = cmToFtIn(Number(data.height_cm));
+            return String(inches);
+          }
+        }
+      }
+    } catch (error) {
+      /* ignore */
+    }
+    return "";
+  });
 
   const [activeField, setActiveField] = useState<ActiveField>(null);
 
@@ -444,7 +477,7 @@ export function useDemographicsForm() {
     setHeightFt("");
     setHeightIn("");
     setWeightUnit("kg");
-    setHeightUnit("cm");
+    setHeightUnit("ftin");
     dismissKeypad();
   };
 

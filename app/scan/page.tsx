@@ -55,9 +55,6 @@ export default function ScanPage() {
     };
   }, []);
 
-  // If navigating here from the demographics submission, show the analysis
-  // overlay briefly so users see both the "Preparing Scanner" and the
-  // analysis loading states in sequence.
   useEffect(() => {
     try {
       const flag = sessionStorage.getItem("show_initial_analysis_overlay");
@@ -70,7 +67,6 @@ export default function ScanPage() {
         }, 1500);
       }
     } catch (e) {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const showErrorToast = (message: string) => {
@@ -333,7 +329,7 @@ export default function ScanPage() {
               </div>
             </div>
 
-            <div className="flex justify-between items-center mt-2 mb-2 select-none">
+            <div className="flex justify-between items-center mt-2 mb-4 select-none">
               <StepNavigation
                 onBack={() => router.back()}
                 isSubmit={false}

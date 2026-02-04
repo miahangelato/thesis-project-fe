@@ -212,3 +212,14 @@
     display: block !important;
   }
 }
+
+/* Simple breathe animation used on the landing CTA button */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.03);
+  }
+}

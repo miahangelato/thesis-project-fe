@@ -171,7 +171,7 @@ export default function FingerprintScanner({
             <div className={`font-bold ${paused ? "text-amber-900" : "text-blue-900"}`}>
               {paused ? "⏸ Scan paused" : "Place your finger now"}
             </div>
-            <div className={`text-sm ${paused ? "text-amber-700" : "text-blue-700"}`}>
+            <div className={`text-xl ${paused ? "text-amber-700" : "text-blue-700"}`}>
               {paused
                 ? "Will resume when you unpause"
                 : `Starting scan in ${waitCountdown} second${waitCountdown !== 1 ? "s" : ""}...`}
@@ -183,11 +183,11 @@ export default function FingerprintScanner({
       {error && error.type === "network" && (
         <div className="fixed w-full max-w-md bg-red-50 border-2 border-red-200 rounded-lg p-4 top-9 right-34 z-1">
           <div className="flex items-start gap-3">
-            <WifiOff className="w-6 h-6 text-red-600" />
+            <WifiOff className="w-10 h-10 text-red-600" />
             <div className="flex-1">
-              <div className="font-semibold text-red-900 mb-2">Scanner Not Connected</div>
-              <p className="text-lg text-red-800 mb-3">{error.message}</p>
-              <div className="text-md text-red-700 bg-white/50 rounded p-2">
+              <div className="text-4xl font-semibold text-red-900 mb-2">Scanner Not Connected</div>
+              <p className="text-2xl text-red-800 mb-3">{error.message}</p>
+              <div className="text-xl text-red-700 bg-white/50 rounded p-2">
                 <strong>To fix this:</strong>
                 <br />• Check scanner USB connection
                 <br />• Ensure scanner app is running
@@ -196,7 +196,7 @@ export default function FingerprintScanner({
             </div>
           </div>
           <X
-            className="w-6 h-6 text-red-400 absolute top-3 right-3 cursor-pointer"
+            className="w-10 h-10 text-red-400 absolute top-3 right-3 cursor-pointer"
             onClick={() => setError(null)}
           />
         </div>

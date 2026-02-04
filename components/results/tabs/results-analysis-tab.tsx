@@ -5,80 +5,67 @@ import type { ResultsParticipantData } from "@/types/results";
 import { Info } from "lucide-react";
 
 const normalizeText = (text: string) => {
-  // Process text line by line to maintain proper structure
   const lines = text
     .replace(/\r\n/g, "\n")
     .split("\n")
-    .map(line => line.trim())
-    .filter(line => line.length > 0) // Remove empty lines
-    .map(line => line.replace(/^\d+\.\s*/, '')); // Remove numbering
-  
-  // Process lines to group heading-paragraph pairs
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .map((line) => line.replace(/^\d+\.\s*/, ""));
+
   const result = [];
   let i = 0;
-  
+
   while (i < lines.length) {
     const currentLine = lines[i];
-    
-    // Check if this is a heading
-    if (currentLine.toLowerCase().includes('what this result') || 
-        currentLine.toLowerCase().includes('scientific basis') ||
-        currentLine.toLowerCase().includes('recommendations') ||
-        currentLine.toLowerCase().includes('what influenced') ||
-        currentLine.toLowerCase().includes('what you can')) {
-      
-      // Add heading
+
+    if (
+      currentLine.toLowerCase().includes("what this result") ||
+      currentLine.toLowerCase().includes("scientific basis") ||
+      currentLine.toLowerCase().includes("recommendations") ||
+      currentLine.toLowerCase().includes("what influenced") ||
+      currentLine.toLowerCase().includes("what you can")
+    ) {
       result.push(currentLine);
-      
-      // Add next line as paragraph if it exists and isn't another heading
+
       if (i + 1 < lines.length) {
         const nextLine = lines[i + 1];
-        const isNextHeading = nextLine.toLowerCase().includes('what this result') || 
-                           nextLine.toLowerCase().includes('scientific basis') ||
-                           nextLine.toLowerCase().includes('recommendations') ||
-                           nextLine.toLowerCase().includes('what influenced') ||
-                           nextLine.toLowerCase().includes('what you can');
-        
+        const isNextHeading =
+          nextLine.toLowerCase().includes("what this result") ||
+          nextLine.toLowerCase().includes("scientific basis") ||
+          nextLine.toLowerCase().includes("recommendations") ||
+          nextLine.toLowerCase().includes("what influenced") ||
+          nextLine.toLowerCase().includes("what you can");
+
         if (!isNextHeading) {
           result.push(nextLine);
-          i += 2; // Skip both heading and paragraph
+          i += 2;
         } else {
-          i += 1; // Skip only heading
+          i += 1;
         }
       } else {
-        i += 1; // Skip heading
+        i += 1;
       }
-      
-      // Add blank line between sections (except after last section)
+
       if (i < lines.length) {
-        result.push(''); // Blank line
+        result.push("");
       }
     } else {
-      // Regular line, add it
       result.push(currentLine);
       i += 1;
     }
   }
-  
-  return result.join('\n');
+
+  return result.join("\n");
 };
 
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
-const computeNextDelayMs = (nextChar: string, lookbehind: string) => {
-  let delay = 15;
-
-  delay += Math.floor(Math.random() * 10);
-
-  const prevChar = lookbehind.slice(-1);
-  if (nextChar === "\n") delay += 100;
-  if (prevChar === "\n") delay += 50;
-  if ([".", "!", "?"].includes(prevChar)) delay += 150;
-  if ([",", ":", ";"].includes(prevChar)) delay += 80;
-  if (prevChar === " ") delay += 5;
-
-  return clamp(delay, 5, 400);
+const computeNextDelayMs = (_nextChar: string, _lookbehind: string) => {
+  // Consistent delay slow enough for readers to follow along comfortably
+  const base = 25;
+  const jitter = Math.floor(Math.random() * 10); // 0-9ms
+  return clamp(base + jitter, 5, 1200);
 };
 
 const hashText = (text: string) => {
@@ -169,9 +156,9 @@ export function ResultsAnalysisTab({
     <div className="h-full min-h-0 flex flex-col">
       {participantData?.explanation && (
         <div className="flex flex-col flex-1 min-h-0 h-full">
-          <div className="flex items-start justify-between gap-4 mb-4 p-6 pb-0">
-            <h3 className="font-bold text-2xl text-teal-800 flex items-center">
-              <Info className="w-8 h-8 mr-3 text-teal-600" />
+          <div className="flex items-start justify-between gap-4 p-6 pb-0">
+            <h3 className="font-bold text-4xl text-teal-800 flex items-center">
+              <Info className="w-10 h-10 mr-3 text-teal-600" />
               AI-Generated Health Insights
             </h3>
           </div>
@@ -179,12 +166,49 @@ export function ResultsAnalysisTab({
           <div className="relative flex-1 min-h-0">
             <div
               ref={scrollRef}
-              className="h-full max-h-[500px] overflow-y-auto overflow-x-hidden text-slate-700 whitespace-pre-wrap break-words leading-relaxed text-xl px-6 pb-6 w-full"
+              className="h-full max-h-[640] overflow-y-auto overflow-x-hidden text-slate-900 leading-relaxed text-3xl w-full px-14 mt-5"
             >
-              {displayText}
-              {!isComplete && (
-                <span className="inline-block animate-pulse text-teal-500">▍</span>
-              )}
+              {displayText
+                .replace(/\r\n/g, "\n")
+                .split("\n")
+                .map((l) => l.trim())
+                .filter((l) => l.length > 0)
+                .map((line, idx, arr) => {
+                  const lower = line.toLowerCase();
+                  const isHeading =
+                    lower.includes("what this result") ||
+                    lower.includes("scientific basis") ||
+                    lower.includes("recommendations") ||
+                    lower.includes("what influenced") ||
+                    lower.includes("what you can");
+
+                  if (isHeading) {
+                    return (
+                      <h4 key={idx} className="text-4xl font-semibold text-teal-800 mt-6">
+                        {line}
+                        {!isComplete && idx === arr.length - 1 && (
+                          <span className="inline-block animate-pulse text-teal-500 ml-3">
+                            ▍
+                          </span>
+                        )}
+                      </h4>
+                    );
+                  }
+
+                  return (
+                    <div key={idx} className="flex items-start gap-4 mt-4">
+                      <span className="text-teal-500 text-4xl">✧</span>
+                      <span className="whitespace-pre-wrap">
+                        {line}
+                        {!isComplete && idx === arr.length - 1 && (
+                          <span className="inline-block animate-pulse text-teal-500 ml-2">
+                            ▍
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>

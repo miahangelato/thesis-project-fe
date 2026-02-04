@@ -225,21 +225,70 @@ export default function BloodCentersPage() {
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
               <button
                 onClick={() => router.push("/results")}
-                className="inline-flex items-center gap-2 rounded-xl border-2 border-gray-200 bg-white px-5 py-3 text-base font-bold text-gray-800 shadow-sm transition-colors hover:bg-gray-50 cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-xl border-2 border-gray-200 bg-white px-5 py-3 text-3xl font-bold text-gray-800 shadow-sm transition-colors hover:bg-gray-50 cursor-pointer"
               >
                 <ArrowLeft className="w-5 h-5" /> Back to Results
               </button>
 
+              {totalPages > 1 && (
+                <nav aria-label="Pagination" className="mx-4 flex items-center gap-2">
+                  <button
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage <= 1}
+                    className={`h-12 w-20 rounded-2xl border-2 text-lg font-bold transition-all ${
+                      currentPage <= 1
+                        ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-[#00c2cb] hover:text-[#00c2cb] cursor-pointer shadow-sm"
+                    }`}
+                  >
+                    Prev
+                  </button>
+
+                  {getPageNumbers(currentPage, totalPages).map((p, idx) =>
+                    typeof p === "string" ? (
+                      <span key={`sep-${idx}`} className="px-3 text-gray-500 select-none">
+                        {p}
+                      </span>
+                    ) : (
+                      <button
+                        key={p}
+                        onClick={() => setPage(p as number)}
+                        aria-current={p === currentPage ? "page" : undefined}
+                        className={`h-12 w-12 rounded-2xl border-2 text-lg font-bold transition-all ${
+                          p === currentPage
+                            ? "bg-[#00c2cb] text-white border-[#00adb5]"
+                            : "bg-white text-gray-700 border-gray-200 hover:border-[#00c2cb] hover:text-[#00c2cb] cursor-pointer shadow-sm"
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
+
+                  <button
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={currentPage >= totalPages}
+                    className={`h-12 w-20 rounded-2xl border-2 text-lg font-bold transition-all ${
+                      currentPage >= totalPages
+                        ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-[#00c2cb] hover:text-[#00c2cb] cursor-pointer shadow-sm"
+                    }`}
+                  >
+                    Next
+                  </button>
+                </nav>
+              )}
+
               <div className="flex flex-wrap items-center justify-end gap-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-base font-semibold text-gray-700">City</span>
+                  <span className="text-2xl font-semibold text-gray-700">City</span>
                   <select
                     value={cityFilter}
                     onChange={(e) => {
                       setCityFilter(e.target.value);
                       setPage(1);
                     }}
-                    className="h-12 rounded-xl border-2 cursor-pointer border-gray-200 bg-white px-4 text-base font-semibold text-gray-700 shadow-sm outline-none focus:border-teal-500"
+                    className="h-14 rounded-xl border-2 cursor-pointer border-gray-200 bg-white px-4 text-2xl font-semibold text-gray-700 shadow-sm outline-none focus:border-teal-500"
                   >
                     <option value="all">All Cities</option>
                     <option value="angeles">Angeles</option>
@@ -272,28 +321,28 @@ export default function BloodCentersPage() {
                     {paginatedCenters.map((center, idx) => (
                       <div
                         key={`${center.name}-${idx}`}
-                        className="bg-white border-2 border-gray-100 rounded-4xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col h-full min-h-[520px]"
+                        className="bg-white border-2 border-gray-100 rounded-4xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col h-full min-h-[38vw]"
                       >
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-4">
                             <div className="w-12 h-12 bg-teal-50 rounded-2xl flex items-center justify-center shrink-0 border border-teal-100">
-                              <Heart className="w-6 h-6 text-teal-600" />
+                              <Heart className="text-3xl text-teal-600" />
                             </div>
-                            <h4 className="font-bold text-2xl text-gray-900 leading-tight">
+                            <h4 className="font-bold text-4xl text-gray-900 leading-tight">
                               {center.name}
                             </h4>
                           </div>
 
                           <div className="flex items-start gap-3 mb-6">
-                            <MapPin className="w-5 h-5 text-gray-400 mt-1 shrink-0" />
-                            <p className="text-lg text-gray-500 font-medium leading-relaxed">
+                            <MapPin className="text-3xl text-gray-400 mt-1 shrink-0" />
+                            <p className="text-2xl text-gray-500 font-medium leading-relaxed">
                               {center.address}
                             </p>
                           </div>
 
                           <div className="flex flex-wrap gap-2 mb-8">
                             {center.type && (
-                              <span className="inline-flex items-center px-4 py-2 bg-teal-50 text-teal-700 rounded-xl text-sm font-bold border border-teal-100">
+                              <span className="inline-flex items-center px-4 py-2 bg-teal-50 text-teal-700 rounded-xl text-2xl font-bold border border-teal-100">
                                 {center.type}
                               </span>
                             )}
@@ -301,13 +350,14 @@ export default function BloodCentersPage() {
 
                           <div className="space-y-4 mb-8">
                             {center.phone && (
-                              <div className="flex items-center gap-3 text-gray-600 font-bold text-lg">
-                                <Phone className="w-5 h-5 text-teal-500" /> {center.phone}
+                              <div className="flex items-center gap-3 text-gray-600 font-bold text-2xl">
+                                <Phone className="text-3xl text-teal-500" />{" "}
+                                {center.phone}
                               </div>
                             )}
                             {center.email && (
-                              <div className="flex items-center gap-3 text-gray-500 font-medium">
-                                <Mail className="w-5 h-5 text-gray-400" /> {center.email}
+                              <div className="flex items-center gap-3 text-gray-500 font-medium text-2xl">
+                                <Mail className="text-3xl text-gray-400" /> {center.email}
                               </div>
                             )}
                           </div>
@@ -315,15 +365,15 @@ export default function BloodCentersPage() {
 
                         <button
                           onClick={() => handleOpenModal(center)}
-                          className="w-full group relative overflow-hidden bg-white border-2 border-teal-500 hover:bg-teal-50 p-6 rounded-2xl transition-all active:scale-[0.98]"
+                          className="w-full group relative overflow-hidden bg-white border-2 border-teal-500 hover:bg-teal-50 p-6 rounded-2xl transition-all active:scale-[0.98] cursor-pointer"
                         >
                           <div className="flex items-center justify-center gap-4">
-                            <Smartphone className="w-8 h-8 text-teal-600" />
+                            <Smartphone className="text-3xl text-teal-600" />
                             <div className="text-left">
-                              <p className="text-xl font-bold text-teal-900">
+                              <p className="text-3xl font-bold text-teal-900">
                                 Get Info on Mobile
                               </p>
-                              <p className="text-sm font-bold text-teal-600/70 uppercase tracking-wider">
+                              <p className="text-2xl font-bold text-teal-600/70 uppercase tracking-wider">
                                 Scan QR Code
                               </p>
                             </div>
@@ -332,61 +382,6 @@ export default function BloodCentersPage() {
                       </div>
                     ))}
                   </div>
-
-                  {totalPages > 1 && (
-                    <nav
-                      aria-label="Pagination"
-                      className="mt-8 flex items-center justify-center gap-2 flex-wrap"
-                    >
-                      <button
-                        onClick={() => setPage((p) => Math.max(1, p - 1))}
-                        disabled={currentPage <= 1}
-                        className={`h-12 w-20 rounded-2xl border-2 text-lg font-bold transition-all ${
-                          currentPage <= 1
-                            ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
-                            : "bg-white text-gray-700 border-gray-200 hover:border-[#00c2cb] hover:text-[#00c2cb] cursor-pointer shadow-sm"
-                        }`}
-                      >
-                        Prev
-                      </button>
-
-                      {getPageNumbers(currentPage, totalPages).map((p, idx) =>
-                        typeof p === "string" ? (
-                          <span
-                            key={`sep-${idx}`}
-                            className="px-3 text-gray-500 select-none"
-                          >
-                            {p}
-                          </span>
-                        ) : (
-                          <button
-                            key={p}
-                            onClick={() => setPage(p as number)}
-                            aria-current={p === currentPage ? "page" : undefined}
-                            className={`h-12 w-12 rounded-2xl border-2 text-lg font-bold transition-all ${
-                              p === currentPage
-                                ? "bg-[#00c2cb] text-white border-[#00adb5]"
-                                : "bg-white text-gray-700 border-gray-200 hover:border-[#00c2cb] hover:text-[#00c2cb] cursor-pointer shadow-sm"
-                            }`}
-                          >
-                            {p}
-                          </button>
-                        )
-                      )}
-
-                      <button
-                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                        disabled={currentPage >= totalPages}
-                        className={`h-12 w-20 rounded-2xl border-2 text-lg font-bold transition-all ${
-                          currentPage >= totalPages
-                            ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
-                            : "bg-white text-gray-700 border-gray-200 hover:border-[#00c2cb] hover:text-[#00c2cb] cursor-pointer shadow-sm"
-                        }`}
-                      >
-                        Next
-                      </button>
-                    </nav>
-                  )}
                 </>
               )}
             </div>

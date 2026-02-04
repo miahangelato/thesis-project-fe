@@ -105,12 +105,12 @@ export function ScanAssistantCard({
     <Card className="border-2 border-gray-300 rounded-xl shadow-lg">
       <CardHeader className="pb-3 px-5 py-4 bg-linear-to-r from-teal-50 to-cyan-50 border-b-2 border-teal-200">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-2xl font-bold text-teal-800 flex items-center">
-            <Fingerprint className="w-7 h-7 mr-3 text-teal-600" />
+          <CardTitle className="text-5xl font-bold text-teal-800 flex items-center">
+            <Fingerprint className="w-10 h-10 mr-3 text-teal-600" />
             Scan Assistant
           </CardTitle>
           <div className="flex items-center space-x-3">
-            <span className="text-lg text-gray-600 font-semibold">
+            <span className="text-2xl text-gray-600 font-semibold">
               {scannedCount}/{totalFingers} Scanned
             </span>
             <div className="w-32 bg-gray-200 rounded-full h-3 shadow-inner">
@@ -119,7 +119,7 @@ export function ScanAssistantCard({
                 style={{ width: `${(scannedCount / totalFingers) * 100}%` }}
               />
             </div>
-            <span className="text-lg font-bold text-teal-600">
+            <span className="text-2xl font-bold text-teal-600">
               {scannedCount}/{totalFingers}
             </span>
           </div>
@@ -128,7 +128,7 @@ export function ScanAssistantCard({
 
       <CardContent className="p-5">
         <div className="text-center mb-2">
-          <p className="text-2xl text-gray-600">
+          <p className="text-3xl text-gray-600">
             Follow the instructions to scan your fingerprints
           </p>
         </div>
@@ -137,7 +137,7 @@ export function ScanAssistantCard({
           <div className="flex flex-col items-center">
             <div className="h-16 flex flex-col items-center justify-start mb-3 pt-1">
               <span
-                className={`text-2xl font-bold px-6 py-1.5 rounded-full shadow-sm ${
+                className={`text-3xl font-bold px-6 py-1.5 rounded-full shadow-sm ${
                   hand === "left"
                     ? "bg-blue-100 text-blue-700"
                     : "bg-purple-100 text-purple-700"
@@ -147,8 +147,8 @@ export function ScanAssistantCard({
               </span>
             </div>
 
-            <div className="w-50 h-50 bg-linear-to-br from-blue-50 to-indigo-50 rounded-2xl border-3 border-dashed border-blue-300 flex items-center justify-center mb-3 shadow-inner relative">
-              <HandGuide hand={hand} highlightFinger={highlight} className="w-42 h-42" />
+            <div className="w-60 h-60 bg-linear-to-br from-blue-50 to-indigo-50 rounded-2xl border-3 border-dashed border-blue-300 flex items-center justify-center mb-3 shadow-inner relative">
+              <HandGuide hand={hand} highlightFinger={highlight} className="w-55 h-55" />
             </div>
 
             <div className="w-full">
@@ -175,17 +175,17 @@ export function ScanAssistantCard({
 
           <div className="flex flex-col items-center">
             <div className="h-16 flex flex-col items-center justify-start mb-3 pt-1">
-              <span className="text-2xl font-bold px-6 py-1.5 rounded-full bg-gray-100 text-gray-700 shadow-sm">
+              <span className="text-3xl font-bold px-6 py-1.5 rounded-full bg-gray-100 text-gray-700 shadow-sm">
                 Scanned Result
               </span>
               {preview.fileToShow && preview.fingerNameToShow && (
-                <span className="text-xs font-bold text-gray-400 mt-1 uppercase tracking-wider">
+                <span className="text-md font-bold text-gray-400 mt-1 uppercase tracking-wider">
                   {preview.fingerNameToShow}
                 </span>
               )}
             </div>
 
-            <div className="w-50 h-50 bg-gray-100 rounded-2xl border-3 border-gray-300 flex items-center justify-center overflow-hidden relative shadow-lg">
+            <div className="mt-2 w-60 h-60 bg-gray-100 rounded-2xl border-3 border-gray-300 flex items-center justify-center overflow-hidden relative shadow-lg">
               {preview.fileToShow ? (
                 <>
                   <div className="relative w-full h-full">
@@ -249,7 +249,7 @@ export function ScanAssistantCard({
             <Button
               onClick={onRequestStartScanning}
               size="lg"
-              className="min-w-[200px] h-14 cursor-pointer bg-[#00c2cb] hover:bg-[#0099a0] text-white font-bold text-xl shadow-md transition-all transform hover:scale-105"
+              className="min-w-[200px] h-18 cursor-pointer bg-[#00c2cb] hover:bg-[#0099a0] text-white font-bold text-4xl shadow-md transition-all transform hover:scale-105"
             >
               <Play className="w-5 h-5 mr-2" />
               Start Scanning
@@ -259,7 +259,7 @@ export function ScanAssistantCard({
               <Button
                 onClick={onTogglePaused}
                 variant={paused ? "default" : "outline"}
-                className={`min-w-44 font-bold h-16 text-xl cursor-pointer ${
+                className={`min-w-44 font-bold h-18 text-4xl cursor-pointer ${
                   paused
                     ? "bg-green-600 hover:bg-green-700 text-white"
                     : "border-amber-500 text-amber-700 hover:bg-amber-50"
@@ -281,7 +281,7 @@ export function ScanAssistantCard({
               <Button
                 onClick={onOpenCancelModal}
                 variant="ghost"
-                className="text-red-500 hover:bg-red-50 hover:text-red-700 font-bold text-xl h-16 px-8 cursor-pointer"
+                className="text-red-500 bg-red-50 hover:bg-red-100 hover:text-red-700 font-bold text-4xl h-18 px-8 cursor-pointer"
               >
                 Cancel
               </Button>
