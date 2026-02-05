@@ -88,23 +88,30 @@ export default function DemographicsPage() {
     hasWarnings,
   } = useDemographicsForm();
 
+  const hasHeightEntered =
+    heightUnit === "cm"
+      ? Boolean(formData.heightCm)
+      : Boolean(heightFt) || Boolean(heightIn);
+
+  const isFormEmpty =
+    !formData.age &&
+    !formData.weight &&
+    !formData.gender &&
+    formData.blood_type === "unknown" &&
+    !hasHeightEntered;
+
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     dismissKeypad();
     if (loading) return;
 
-    // Form validation is handled by disabled button state and inline error messages
     if (!formData.age || !formData.weight || !formData.gender || !heightCm) {
       return;
     }
 
-    // Errors are already displayed inline with red styling
     if (hasErrors) {
       return;
     }
-
-    // Warnings are already displayed inline, so no need for confirmation dialog
-    // Users can proceed even with warnings visible
 
     setLoading(true);
     const start = Date.now();
@@ -186,7 +193,7 @@ export default function DemographicsPage() {
               <div className="flex-1 flex flex-row gap-3 overflow-hidden">
                 <div className="flex flex-col flex-3 min-w-0 gap-4">
                   <div className="bg-white rounded-2xl p-4 shadow-sm border-2 border-slate-100 hover:shadow-md transition-shadow select-none">
-                    <div className="flex items-start mb-3">
+                    <div className="flex items-start mb-8">
                       <div className="w-14 h-14 bg-linear-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center mr-3 shrink-0">
                         <User className="h-10 w-10 text-teal-600" />
                       </div>
@@ -213,7 +220,7 @@ export default function DemographicsPage() {
                       )}
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <Label
@@ -628,7 +635,7 @@ export default function DemographicsPage() {
                       </div>
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-16 mb-6">
                       <div
                         className={`flex items-center justify-between h-14 w-full px-4 bg-white rounded-lg border-2 ${
                           getFieldError("bmi") ? "border-red-400" : "border-slate-300"
@@ -677,7 +684,7 @@ export default function DemographicsPage() {
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-2xl p-4 shadow-sm border-2 border-slate-100 hover:shadow-md transition-shadow select-none">
+                  <div className="hidden bg-white rounded-2xl p-4 shadow-sm border-2 border-slate-100 hover:shadow-md transition-shadow select-none">
                     <div className="flex items-center gap-4">
                       <Checkbox
                         id="donation-opt-in"
@@ -737,7 +744,7 @@ export default function DemographicsPage() {
             </form>
           </main>
 
-          <div className="mt-8 mb-6 shrink-0 px-0">
+          <div className="mb-6 shrink-0 px-0">
             <StepNavigation
               form="demographics-form"
               onBack={() => router.back()}
@@ -749,6 +756,7 @@ export default function DemographicsPage() {
                 <Button
                   type="button"
                   variant="ghost"
+                  disabled={isFormEmpty}
                   onClick={() => setShowClearConfirmModal(true)}
                   className="flex items-center gap-2 h-14 px-6 text-3xl font-bold text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer rounded-xl transition-all"
                 >

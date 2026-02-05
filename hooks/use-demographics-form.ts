@@ -124,7 +124,7 @@ export function useDemographicsForm() {
             gender:
               data.gender === "prefer_not_say" ? "prefer_not_to_say" : data.gender || "",
             blood_type: data.blood_type || "unknown",
-            showDonationCentersLater: data.show_donation_centers_later || false,
+            showDonationCentersLater: data.show_donation_centers_later ?? true,
           };
         }
       }
@@ -137,7 +137,7 @@ export function useDemographicsForm() {
       heightCm: "",
       gender: "",
       blood_type: "unknown",
-      showDonationCentersLater: false,
+      showDonationCentersLater: true,
     };
   });
 
