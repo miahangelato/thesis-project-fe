@@ -104,6 +104,50 @@ export default function ConsentPage() {
                 accentColor="#00c2cb"
                 onEndSession={promptBackNavigation}
               />
+              <div className="bg-white rounded-3xl p-8 border-2 border-[#00c2cb]/30 hover:shadow-xl transition-shadow duration-200 mb-4 shrink-0 overflow-hidden">
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+                  <div className="lg:flex-1">
+                    <div className="flex items-center mb-3 gap-4">
+                      <UserCheck className="text-[#00c2cb] h-8 w-8" />
+                      <h2 className="text-5xl font-bold text-gray-900 wrap-break-words break-all whitespace-normal">
+                        You're in Control
+                      </h2>
+                    </div>
+
+                    <p className="text-2xl text-gray-700 leading-relaxed wrap-break-words break-all whitespace-normal">
+                      Choose whether to save your data for research purposes. Either way,
+                      you can continue with the analysis.{" "}
+                      <strong className="text-teal-800">
+                        Your choice will not affect the analysis quality.
+                      </strong>
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full lg:w-auto">
+                    <button
+                      onClick={() => setConsent(true)}
+                      className={`w-full sm:w-auto flex items-center justify-center gap-3 px-8 h-24 rounded-2xl font-extrabold text-3xl transition-all duration-200 shadow-lg cursor-pointer ${
+                        consent === true
+                          ? "bg-[#00c2cb] text-white ring-4 ring-[#00c2cb]/20 scale-[1.02]"
+                          : "bg-white text-[#00c2cb] border-2 border-[#00c2cb] hover:bg-[#e4f7f8]"
+                      }`}
+                    >
+                      <span>Save My Data</span>
+                    </button>
+
+                    <button
+                      onClick={() => setConsent(false)}
+                      className={`w-full sm:w-auto flex items-center justify-center gap-3 px-8 h-24 rounded-2xl font-extrabold text-3xl transition-all duration-200 shadow-lg cursor-pointer ${
+                        consent === false
+                          ? "bg-gray-700 text-white ring-4 ring-gray-200 scale-[1.02]"
+                          : "bg-white text-gray-700 border-2 border-gray-300 hover:bg-gray-50"
+                      }`}
+                    >
+                      <span>Don't Save Data</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
 
               <div className="grid md:grid-cols-2 gap-4 mb-4">
                 <div className="bg-white rounded-3xl p-6 border-2 border-[#00c2cb]/20 hover:shadow-xl transition-all duration-200 h-full flex flex-col overflow-hidden">
@@ -254,51 +298,6 @@ export default function ConsentPage() {
                       This predictive tool does not replace medical diagnosis or lab
                       tests. Consult professionals for clinical decisions.
                     </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-3xl p-8 border-2 border-[#00c2cb]/30 hover:shadow-xl transition-shadow duration-200 mb-4 shrink-0 overflow-hidden">
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
-                  <div className="lg:flex-1">
-                    <div className="flex items-center mb-3 gap-4">
-                      <UserCheck className="text-[#00c2cb] h-8 w-8" />
-                      <h2 className="text-5xl font-bold text-gray-900 wrap-break-words break-all whitespace-normal">
-                        You're in Control
-                      </h2>
-                    </div>
-
-                    <p className="text-2xl text-gray-700 leading-relaxed wrap-break-words break-all whitespace-normal">
-                      Choose whether to save your data for research purposes. Either way,
-                      you can continue with the analysis.{" "}
-                      <strong className="text-teal-800">
-                        Your choice will not affect the analysis quality.
-                      </strong>
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full lg:w-auto">
-                    <button
-                      onClick={() => setConsent(true)}
-                      className={`w-full sm:w-auto flex items-center justify-center gap-3 px-8 h-24 rounded-2xl font-extrabold text-3xl transition-all duration-200 shadow-lg cursor-pointer ${
-                        consent === true
-                          ? "bg-[#00c2cb] text-white ring-4 ring-[#00c2cb]/20 scale-[1.02]"
-                          : "bg-white text-[#00c2cb] border-2 border-[#00c2cb] hover:bg-[#e4f7f8]"
-                      }`}
-                    >
-                      <span>Save My Data</span>
-                    </button>
-
-                    <button
-                      onClick={() => setConsent(false)}
-                      className={`w-full sm:w-auto flex items-center justify-center gap-3 px-8 h-24 rounded-2xl font-extrabold text-3xl transition-all duration-200 shadow-lg cursor-pointer ${
-                        consent === false
-                          ? "bg-gray-700 text-white ring-4 ring-gray-200 scale-[1.02]"
-                          : "bg-white text-gray-700 border-2 border-gray-300 hover:bg-gray-50"
-                      }`}
-                    >
-                      <span>Don't Save Data</span>
-                    </button>
                   </div>
                 </div>
               </div>

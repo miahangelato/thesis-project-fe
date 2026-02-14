@@ -31,7 +31,7 @@ export function MainLanding({ onStartClick, loading = false }: MainLandingProps)
         {/* LEFT: content */}
         <div className="w-[69%] flex flex-col h-[700px] pr-4 lg:pr-8 relative z-10">
           {/* Static Text Content */}
-          <div className="relative mt-32">
+          <div className="relative mt-25">
             <div className="inline-block mb-3">
               <span className="text-[#00c2cb] font-semibold text-lg lg:text-2xl bg-[#e4f7f8] px-4 py-2 rounded-full">
                 Recent insights
@@ -52,9 +52,7 @@ export function MainLanding({ onStartClick, loading = false }: MainLandingProps)
             </div>
 
             <div className="flex items-center space-x-6 mt-4 mb-4">
-              <span className="text-gray-500 text-xl font-medium">
-                🧠 Research-Based
-              </span>
+              <span className="text-gray-500 text-xl font-medium">🧠 Research-Based</span>
               <span className="text-gray-300 text-xl">•</span>
               <span className="text-gray-500 text-xl font-medium">🔬 AI-Driven</span>
               <span className="text-gray-300 text-xl">•</span>
@@ -97,7 +95,7 @@ export function MainLanding({ onStartClick, loading = false }: MainLandingProps)
         </div>
 
         {/* RIGHT: triptych cards with enhanced design */}
-        <div className="w-[58%] flex justify-center items-center relative h-[650px] pb-10">
+        <div className="w-[58%] flex justify-center items-center relative h-[650px]">
           <div className="relative w-full max-w-xl -translate-y-2 z-10">
             <div className="relative h-[460px] w-full flex items-center justify-center">
               {/* LEFT CARD */}
