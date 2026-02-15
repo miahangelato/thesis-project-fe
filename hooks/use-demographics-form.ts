@@ -410,11 +410,19 @@ export function useDemographicsForm() {
         });
         break;
       case "heightFt":
-        setHeightFt((prev) => {
-          const next = prev + key;
-          if (!/^\d*$/.test(next)) return prev;
-          return next;
-        });
+        {
+          const next = `${heightFt}${key}`;
+          if (!/^\d*$/.test(next)) break;
+          if (next.length > 1) break;
+          setHeightFt(next);
+
+          if (next.length === 1) {
+            setActiveField("heightIn");
+            setTimeout(() => {
+              document.getElementById("height-in")?.focus();
+            }, 0);
+          }
+        }
         break;
       case "heightIn":
         setHeightIn((prev) => {
