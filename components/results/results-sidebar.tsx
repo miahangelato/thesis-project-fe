@@ -165,19 +165,20 @@ export function ResultsSidebar({
                 </div>
                 <div className="flex flex-col">
                   <span className="text-2xl text-slate-500 font-bold mb-1 uppercase tracking-wider">
-                    Blood Type
-                  </span>
-                  <span className="text-3xl font-bold text-slate-900 capitalize">
-                    {demographics?.blood_type || "Unknown"}
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-2xl text-slate-500 font-bold mb-1 uppercase tracking-wider">
                     BMI
                   </span>
                   <span className="text-3xl font-bold text-slate-900">
                     {participantData?.bmi?.toFixed(1) || "N/A"}
                   </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-2xl text-slate-500 font-bold mb-1 uppercase tracking-wider">
+                    Blood Type
+                  </span>
+                  <span className="text-3xl font-bold text-slate-900 capitalize">
+                    {demographics?.blood_type || "Unknown"}
+                  </span>
+                  <span className="text-gray-600">(for validation)</span>
                 </div>
               </div>
             </div>

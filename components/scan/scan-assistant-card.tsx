@@ -236,7 +236,7 @@ export function ScanAssistantCard({
                 className="w-50 h-12 mt-3 text-[#00c2cb] border-2 border-[#00c2cb] hover:bg-teal-50 hover:text-[#00adb5] hover:border-[#00adb5] font-bold text-lg cursor-pointer transition-all shadow-sm flex items-center justify-center gap-2"
               >
                 <RefreshCcw className="w-5 h-5" />
-                Retake this Finger
+                Rescan?
               </Button>
             )}
           </div>

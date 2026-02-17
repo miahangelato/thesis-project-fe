@@ -290,41 +290,36 @@ export default function ScanPage() {
                 onEndSession={promptBackNavigation}
               />
               <div>
-                <div className="grid grid-cols-12 gap-2 h-full select-none">
-                  {/* Left Panel - Scanning Interface - FIXED WIDTH */}
-                  <div className="col-span-7 flex flex-col h-full">
-                    <ScanAssistantCard
-                      loading={loading}
-                      setScannerReady={setScannerReady}
-                      currentFingerIndex={currentFingerIndex}
-                      fingerFiles={fingerFiles}
-                      countdown={countdown}
-                      scanningStarted={scanningStarted}
-                      paused={paused}
-                      totalFingers={totalFingers}
-                      scannedCount={scannedCount}
-                      currentFinger={currentFinger}
-                      hand={hand}
-                      highlight={highlight}
-                      scanAssistantState={scanAssistantState}
-                      firstUnscannedIndex={firstUnscannedIndex}
-                      onRequestStartScanning={() => setShowScanConfirmModal(true)}
-                      onOpenCancelModal={() => {
-                        if (!paused) togglePaused();
-                        setShowCancelModal(true);
-                      }}
-                      onOpenResetModal={() => setShowResetConfirmModal(true)}
-                      onCapture={handleCapture}
-                      onPreviousFinger={handlePreviousFinger}
-                      onNextFinger={handleNextFinger}
-                      onTogglePaused={togglePaused}
-                      onRescan={handleRetakeClick}
-                      rescanningFinger={rescanningFinger}
-                    />
-                  </div>
-
-                  {/* Right Panel - Instructions and Progress - FIXED WIDTH */}
-                  <ScanInfoPanel demographics={demographics} />
+                {/* Left Panel - Scanning Interface - FIXED WIDTH */}
+                <div className="col-span-7 flex flex-col h-full max-w-350 mx-auto">
+                  <ScanAssistantCard
+                    loading={loading}
+                    setScannerReady={setScannerReady}
+                    currentFingerIndex={currentFingerIndex}
+                    fingerFiles={fingerFiles}
+                    countdown={countdown}
+                    scanningStarted={scanningStarted}
+                    paused={paused}
+                    totalFingers={totalFingers}
+                    scannedCount={scannedCount}
+                    currentFinger={currentFinger}
+                    hand={hand}
+                    highlight={highlight}
+                    scanAssistantState={scanAssistantState}
+                    firstUnscannedIndex={firstUnscannedIndex}
+                    onRequestStartScanning={() => setShowScanConfirmModal(true)}
+                    onOpenCancelModal={() => {
+                      if (!paused) togglePaused();
+                      setShowCancelModal(true);
+                    }}
+                    onOpenResetModal={() => setShowResetConfirmModal(true)}
+                    onCapture={handleCapture}
+                    onPreviousFinger={handlePreviousFinger}
+                    onNextFinger={handleNextFinger}
+                    onTogglePaused={togglePaused}
+                    onRescan={handleRetakeClick}
+                    rescanningFinger={rescanningFinger}
+                  />
                 </div>
               </div>
             </div>

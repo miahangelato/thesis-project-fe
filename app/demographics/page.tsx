@@ -191,7 +191,7 @@ export default function DemographicsPage() {
               className="flex-1 flex flex-col"
             >
               <div className="flex-1 flex flex-row gap-3 overflow-hidden">
-                <div className="flex flex-col flex-3 min-w-0 gap-4">
+                <div className="flex flex-col flex-3 max-w-350 mx-auto gap-4">
                   <div className="bg-white rounded-2xl p-4 shadow-sm border-2 border-slate-100 hover:shadow-md transition-shadow select-none">
                     <div className="flex items-start mb-8">
                       <div className="w-14 h-14 bg-linear-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center mr-3 shrink-0">
@@ -239,7 +239,7 @@ export default function DemographicsPage() {
                           name="age"
                           type="text"
                           inputMode="numeric"
-                          placeholder="e.g., 25"
+                          placeholder="Click to enter age."
                           autoComplete="off"
                           readOnly
                           value={formData.age}
@@ -252,7 +252,7 @@ export default function DemographicsPage() {
                               setFormData((p) => ({ ...p, age: val }));
                           }}
                           required
-                          className={`h-14 text-lg font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer ${
+                          className={`h-18 text-lg font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer placeholder:text-2xl placeholder:text-gray-400 ${
                             getFieldError("age")
                               ? "border-red-400 bg-red-50 text-red-700"
                               : activeField === "age"
@@ -298,7 +298,7 @@ export default function DemographicsPage() {
                           name="weight"
                           type="text"
                           inputMode="decimal"
-                          placeholder="e.g., 65.5"
+                          placeholder="Click to enter weight."
                           autoComplete="off"
                           readOnly
                           value={formData.weight}
@@ -311,7 +311,7 @@ export default function DemographicsPage() {
                               setFormData((p) => ({ ...p, weight: val }));
                           }}
                           required
-                          className={`h-14 text-lg font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer ${
+                          className={`h-18 text-lg font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer placeholder:text-2xl placeholder:text-gray-400 ${
                             getFieldError("weight")
                               ? "border-red-400 bg-red-50 text-red-700"
                               : activeField === "weight"
@@ -389,7 +389,7 @@ export default function DemographicsPage() {
                                   id="height-ft"
                                   type="text"
                                   inputMode="numeric"
-                                  placeholder="5"
+                                  placeholder="Feet"
                                   autoComplete="off"
                                   readOnly
                                   value={heightFt}
@@ -400,7 +400,7 @@ export default function DemographicsPage() {
                                     const val = e.target.value;
                                     if (/^\d*$/.test(val)) setHeightFt(val);
                                   }}
-                                  className={`h-14 text-xl font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer ${
+                                  className={`h-18 text-lg font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer placeholder:text-2xl placeholder:text-gray-400 ${
                                     getFieldError("height")
                                       ? "border-red-400 bg-red-50 text-red-700"
                                       : heightFt
@@ -418,7 +418,7 @@ export default function DemographicsPage() {
                                   id="height-in"
                                   type="text"
                                   inputMode="numeric"
-                                  placeholder="0"
+                                  placeholder="Inches"
                                   autoComplete="off"
                                   readOnly
                                   value={heightIn}
@@ -433,7 +433,7 @@ export default function DemographicsPage() {
                                     )
                                       setHeightIn(val);
                                   }}
-                                  className={`h-14 text-xl font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer ${
+                                  className={`h-18 text-lg font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer placeholder:text-2xl placeholder:text-gray-400 ${
                                     getFieldError("height")
                                       ? "border-red-400 bg-red-50 text-red-700"
                                       : heightIn
@@ -466,7 +466,7 @@ export default function DemographicsPage() {
                               name="height"
                               type="text"
                               inputMode="numeric"
-                              placeholder="e.g., 170"
+                              placeholder="Click to enter height."
                               autoComplete="off"
                               readOnly
                               value={formData.heightCm}
@@ -479,7 +479,7 @@ export default function DemographicsPage() {
                                   setFormData((p) => ({ ...p, heightCm: val }));
                               }}
                               required
-                              className={`h-14 text-lg font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer ${
+                              className={`h-18 text-lg font-bold rounded-lg border-2 transition-all duration-200 cursor-pointer placeholder:text-2xl placeholder:text-gray-400 ${
                                 getFieldError("height")
                                   ? "border-red-400 bg-red-50 text-red-700"
                                   : activeField === "heightCm"
@@ -561,7 +561,7 @@ export default function DemographicsPage() {
                         >
                           <SelectTrigger
                             id="gender"
-                            className={`h-14 w-full text-2xl font-bold rounded-lg border-2 transition-all duration-200 bg-white flex items-center justify-between px-4 cursor-pointer ${
+                            className={`h-19 w-full text-3xl font-bold rounded-lg border-2 transition-all duration-200 bg-white flex items-center justify-between px-4 cursor-pointer ${
                               formData.gender
                                 ? "border-green-400 bg-green-50 text-green-700"
                                 : "border-slate-300 hover:border-teal-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
@@ -586,7 +586,7 @@ export default function DemographicsPage() {
                         </Select>
                       </div>
 
-                      <div className="space-y-1">
+                      <div className="space-y-1.5">
                         <div className="flex items-center gap-2">
                           <Label
                             htmlFor="blood_type"
@@ -606,7 +606,7 @@ export default function DemographicsPage() {
                           }
                         >
                           <SelectTrigger
-                            className={`h-14 w-full text-xl font-bold rounded-lg border-2 transition-all duration-200 bg-white flex items-center justify-between px-4 cursor-pointer ${
+                            className={`h-19 w-full text-3xl font-bold rounded-lg border-2 transition-all duration-200 bg-white flex items-center justify-between px-4 cursor-pointer ${
                               formData.blood_type !== "unknown"
                                 ? "border-green-400 bg-green-50 text-green-700"
                                 : "border-slate-300 hover:border-teal-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
@@ -637,7 +637,7 @@ export default function DemographicsPage() {
 
                     <div className="mt-16 mb-6">
                       <div
-                        className={`flex items-center justify-between h-14 w-full px-4 bg-white rounded-lg border-2 ${
+                        className={`flex items-center justify-between h-19 w-full px-4 bg-white rounded-lg border-2 ${
                           getFieldError("bmi") ? "border-red-400" : "border-slate-300"
                         }`}
                       >
@@ -649,7 +649,7 @@ export default function DemographicsPage() {
                           <InfoTooltip text="BMI is a general indicator based on height and weight. It does not account for muscle mass or body composition." />
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-xl font-black text-slate-900 wrap-break-words">
+                          <span className="text-3xl font-black text-slate-900 wrap-break-words">
                             {bmiValue || "--.-"}
                           </span>
                           {bmiCategory && (
@@ -707,39 +707,6 @@ export default function DemographicsPage() {
                     </div>
                   </div>
                 </div>
-
-                {/* Right */}
-                <div className="flex flex-col flex-2 gap-4 select-none">
-                  <StaticInfoPanel />
-
-                  <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-                    <div className="flex items-start gap-4">
-                      <Shield className="h-8 w-8 text-slate-500 mt-1 shrink-0" />
-                      <div>
-                        <strong className="text-3xl text-slate-900 block mb-1">
-                          Legal Disclaimer
-                        </strong>
-                        <p className="text-xl text-slate-600 leading-relaxed">
-                          This tool provides predictive insights based on fingerprint and
-                          demographic data. It does not replace laboratory tests or
-                          medical diagnosis. Always consult healthcare professionals.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-red-50 border-2 border-red-500 rounded-2xl px-5 py-3 flex gap-4 items-start shadow-sm">
-                    <AlertTriangle className="h-8 w-8 text-red-600 shrink-0 mt-2" />
-                    <div>
-                      <strong className="block text-4xl font-bold text-red-950 mb-1">
-                        Important
-                      </strong>
-                      <p className="text-2xl text-red-900 leading-relaxed">
-                        This is a screening tool — not a medical diagnosis.
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
             </form>
           </main>
@@ -747,7 +714,6 @@ export default function DemographicsPage() {
           <div className="mb-6 shrink-0 px-0">
             <StepNavigation
               form="demographics-form"
-              onBack={() => router.back()}
               isSubmit={true}
               loading={loading}
               isNextDisabled={!isBasicInfoComplete || hasErrors || loading}

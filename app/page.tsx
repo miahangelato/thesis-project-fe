@@ -10,8 +10,10 @@ import { sessionAPI } from "@/lib/api";
 import { Footer } from "@/components/layout/footer";
 import { WarningHeader } from "@/components/layout/warning-header";
 import { MainLanding } from "@/components/features/landing/main-landing";
+import { ConsentModal } from "@/components/modals/consent-modal";
+import { FullScreenLoader } from "@/components/ui/full-screen-loader";
 
-import { FileText, User, ScanLine, BarChart3 } from "lucide-react";
+import { ShieldCheck, ScanLine, FileText, User, BarChart3 } from "lucide-react";
 
 const features = [
   {
@@ -41,11 +43,14 @@ const features = [
 
 export default function LandingPage() {
   const router = useRouter();
-  const { setSession, setCurrentStep } = useSession();
-  const [loading, setLoading] = useState(false);
+  const { setSession, sessionId, setCurrentStep, clearSession } = useSession();
+  const [isStartingSession, setIsStartingSession] = useState(false);
+  const [isSubmittingConsent, setIsSubmittingConsent] = useState(false);
+  const [showConsentModal, setShowConsentModal] = useState(false);
+  const [consent, setConsent] = useState(false);
 
   const handleStartClick = async () => {
-    setLoading(true);
+    setIsStartingSession(true);
     try {
       const response = await sessionAPI.start(false);
 
@@ -54,19 +59,77 @@ export default function LandingPage() {
       if (session_id) {
         setSession(session_id, false);
         setCurrentStep(STEPS.CONSENT);
-        router.push(ROUTES.CONSENT);
+        setConsent(false);
+        setShowConsentModal(true);
       } else {
         throw new Error("Invalid session response");
       }
-    } catch (err) {
+    } catch {
       const mockId = "dev-session-" + Date.now();
       setSession(mockId, false);
       setCurrentStep(STEPS.CONSENT);
-      router.push(ROUTES.CONSENT);
+      setConsent(false);
+      setShowConsentModal(true);
     } finally {
-      setLoading(false);
+      setIsStartingSession(false);
     }
   };
+
+  const handleCancelConsent = () => {
+    if (isSubmittingConsent) return;
+    setShowConsentModal(false);
+    setConsent(false);
+    clearSession();
+  };
+
+  const handleContinueConsent = async () => {
+    if (isSubmittingConsent) return;
+
+    setIsSubmittingConsent(true);
+
+    try {
+      if (!sessionId) {
+        throw new Error("[SESSION] Missing session ID during consent update");
+      }
+
+      await sessionAPI.updateConsent(sessionId, consent);
+      setSession(sessionId, consent);
+
+      setCurrentStep(STEPS.DEMOGRAPHICS);
+      setShowConsentModal(false);
+      router.push(ROUTES.DEMOGRAPHICS);
+    } catch (error: unknown) {
+      const status =
+        typeof error === "object" && error !== null && "response" in error
+          ? (error as { response?: { status?: number } }).response?.status
+          : undefined;
+
+      if (status === 404) {
+        clearSession();
+        setShowConsentModal(false);
+        router.push(ROUTES.HOME);
+      } else {
+        console.error("[SESSION] Error updating consent:", error);
+      }
+    } finally {
+      setIsSubmittingConsent(false);
+    }
+  };
+
+  const consentSubmissionSteps = [
+    {
+      label: "Saving Consent",
+      description: "Updating your privacy preference",
+      status: "current" as const,
+      icon: ShieldCheck,
+    },
+    {
+      label: "Preparing Session",
+      description: "Setting up your screening flow",
+      status: "pending" as const,
+      icon: ScanLine,
+    },
+  ];
 
   return (
     <div className="relative flex flex-col h-screen w-full page-content-max overflow-hidden">
@@ -75,7 +138,7 @@ export default function LandingPage() {
       </div>
 
       <div className="relative flex-1 w-full min-h-0 flex items-center">
-        <MainLanding onStartClick={handleStartClick} loading={loading} />
+        <MainLanding onStartClick={handleStartClick} loading={isStartingSession} />
       </div>
 
       <div className="w-full page-container pb-2 -mt-8 grid grid-cols-4 gap-6 z-10 select-none">
@@ -87,7 +150,7 @@ export default function LandingPage() {
             <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#e4f7f8] mb-4">
               <span className="text-[#00c2cb] text-6xl">{feature.icon}</span>
             </div>
-            <h3 className="text-xl lg:text-4xl font-semibold mb-3 text-gray-800 wrap-break-word break-all whitespace-normal">
+            <h3 className="text-xl lg:text-4xl font-semibold mb-3 text-gray-800 whitespace-normal">
               {feature.title}
             </h3>
             <p className="text-lg lg:text-2xl text-gray-600 leading-normal whitespace-normal">
@@ -100,6 +163,24 @@ export default function LandingPage() {
       <div className="py-5 z-30">
         <Footer />
       </div>
+
+      <ConsentModal
+        isOpen={showConsentModal}
+        consent={consent}
+        loading={isSubmittingConsent}
+        onConsentChange={setConsent}
+        onCancel={handleCancelConsent}
+        onContinue={handleContinueConsent}
+      />
+
+      <FullScreenLoader
+        isOpen={isSubmittingConsent}
+        title="Preparing Session"
+        subtitle="Saving your consent and moving to the next step..."
+        steps={consentSubmissionSteps}
+        useDefaultSteps={false}
+        footerText="This should only take a few seconds"
+      />
     </div>
   );
 }
