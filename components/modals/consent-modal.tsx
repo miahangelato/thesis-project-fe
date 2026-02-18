@@ -70,7 +70,8 @@ export function ConsentModal({
                 <span className="text-[#00c2cb] whitespace-nowrap">(optional)</span>
               </h3>
               <p className="text-lg sm:text-xl text-slate-500 mt-1">
-                You can continue either way.
+                Click the toggle if you want your results to be saved in our database. <br />
+                {""}You can continue either way.
               </p>
             </div>
 
