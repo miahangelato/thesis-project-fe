@@ -150,27 +150,23 @@ export default function ScanPage() {
         return;
       }
 
-      const uploadPromises = Object.entries(fingerFiles).map(async ([finger, file]) => {
-        return new Promise<void>((resolve, reject) => {
+      const readFileAsDataUrl = (file: File, finger: string) =>
+        new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
-          reader.onloadend = async () => {
-            const base64 = reader.result as string;
-            try {
-              await sessionAPI.submitFingerprint(activeSessionId, {
-                finger_name: finger,
-                image: base64,
-              });
-              resolve();
-            } catch (e) {
-              reject(e);
-            }
-          };
+          reader.onloadend = () => resolve((reader.result as string) || "");
           reader.onerror = () => reject(new Error(`Failed to read file for ${finger}`));
           reader.readAsDataURL(file);
         });
-      });
 
-      await Promise.all(uploadPromises);
+      // Keep uploads sequential so a single backend worker is not overloaded.
+      for (const [finger, file] of Object.entries(fingerFiles)) {
+        if (!file) continue;
+        const base64 = await readFileAsDataUrl(file, finger);
+        await sessionAPI.submitFingerprint(activeSessionId, {
+          finger_name: finger,
+          image: base64,
+        });
+      }
 
       const analyzeResponse = await sessionAPI.analyze(activeSessionId);
       saveSessionResultPayload(activeSessionId, analyzeResponse.data);

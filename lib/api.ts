@@ -28,7 +28,10 @@ export const sessionAPI = {
       finger_name: string;
       image: string;
     }
-  ) => api.post(API_ENDPOINTS.SESSION_FINGERPRINT(sessionId), data),
+  ) =>
+    api.post(API_ENDPOINTS.SESSION_FINGERPRINT(sessionId), data, {
+      timeout: API_CONFIG.LONG_TIMEOUT,
+    }),
 
   updateConsent: (sessionId: string, consent: boolean) =>
     api.patch(`/session/${sessionId}/consent`, { consent }),
