@@ -219,7 +219,7 @@ export function getErrorMessage(error: unknown): string {
 
 export function isErrorType<T extends BaseAppError>(
   error: unknown,
-  errorClass: new (...args: any[]) => T
+  errorClass: new (...args: never[]) => T
 ): error is T {
   return error instanceof errorClass;
 }
@@ -228,7 +228,8 @@ export function logError(error: unknown, context?: string) {
   const normalizedError = normalizeError(error);
 
   if (process.env.NODE_ENV === "development") {
-    console.error(`[${context || "Error"}]`, normalizedError.toJSON());
+    // Use warn in dev to avoid full-screen console error overlays for handled errors.
+    console.warn(`[${context || "Error"}]`, normalizedError.toJSON());
   }
 
   if (process.env.NODE_ENV === "production") {

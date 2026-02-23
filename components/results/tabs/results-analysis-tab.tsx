@@ -61,7 +61,7 @@ const normalizeText = (text: string) => {
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
-const computeNextDelayMs = (_nextChar: string, _lookbehind: string) => {
+const computeNextDelayMs = () => {
   // Consistent delay slow enough for readers to follow along comfortably
   const base = 25;
   const jitter = Math.floor(Math.random() * 10); // 0-9ms
@@ -98,6 +98,7 @@ export function ResultsAnalysisTab({
     timeoutRef.current = null;
 
     if (!rawExplanation) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTypedCount(0);
       return;
     }
@@ -119,9 +120,7 @@ export function ResultsAnalysisTab({
     if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
 
     const nextIndex = Math.min(rawExplanation.length, typedCount + 1);
-    const nextChar = rawExplanation.charAt(typedCount);
-    const lookbehind = rawExplanation.slice(Math.max(0, typedCount - 8), typedCount);
-    const delay = computeNextDelayMs(nextChar, lookbehind);
+    const delay = computeNextDelayMs();
 
     timeoutRef.current = window.setTimeout(() => {
       setTypedCount(nextIndex);

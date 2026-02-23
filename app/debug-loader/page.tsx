@@ -3,14 +3,21 @@
 import React, { useState } from "react";
 import { FullScreenLoader } from "@/components/ui/full-screen-loader";
 import { Button } from "@/components/ui/button";
-import { Fingerprint, Brain, ClipboardCheck, Settings2, Database } from "lucide-react";
+import { Fingerprint, Brain, ClipboardCheck, Database } from "lucide-react";
+
+type LoaderStep = {
+  label: string;
+  description?: string;
+  status: "pending" | "current" | "completed";
+  icon?: React.ElementType;
+};
 
 export default function DebugLoaderPage() {
   const [loaderConfig, setLoaderConfig] = useState<{
     isOpen: boolean;
     title: string;
     subtitle: string;
-    steps: any[];
+    steps: LoaderStep[];
     footerText?: string;
   }>({
     isOpen: false,
@@ -23,7 +30,7 @@ export default function DebugLoaderPage() {
   const showLoader = (
     title: string,
     subtitle: string,
-    steps: any[] = [],
+    steps: LoaderStep[] = [],
     footerText?: string
   ) => {
     setLoaderConfig({ isOpen: true, title, subtitle, steps, footerText });

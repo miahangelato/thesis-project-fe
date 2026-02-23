@@ -56,12 +56,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     // Prevent browser back/forward cache restoration
     preventBFCache();
 
-    // CRITICAL: Clear all state and storage
-    setSessionId(null);
-    setConsent(false);
-    setCurrentStepState(STEPS.LANDING);
-    setExpirationReason(null);
-
     // Clear any stale data immediately, but preserve in-progress scanned fingerprints
     storage.clear();
     if (typeof window !== "undefined") {
@@ -72,11 +66,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         if (preserved) {
           window.sessionStorage.setItem("scanned_fingerprints", preserved);
         }
-      } catch (e) {
+      } catch {
         // ignore storage errors
       }
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoading(false);
   }, []);
 
@@ -124,8 +119,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (sessionId && !isLoading) {
-      setExpirationReason(null);
-
       // Start automatic expiration monitoring (only on client)
       const manager = privacyManagerRef.current;
       if (manager) {
@@ -153,6 +146,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const setSession = useCallback((id: string, consentGiven: boolean) => {
     setSessionId(id);
     setConsent(consentGiven);
+    setExpirationReason(null);
   }, []);
 
   const setCurrentStep = useCallback((step: number) => {

@@ -1,6 +1,7 @@
 export const API_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api",
-  TIMEOUT: 30000,
+  TIMEOUT: Number(process.env.NEXT_PUBLIC_API_TIMEOUT_MS || 30000),
+  LONG_TIMEOUT: Number(process.env.NEXT_PUBLIC_API_LONG_TIMEOUT_MS || 180000),
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000,
 } as const;

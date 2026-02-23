@@ -1,9 +1,9 @@
 // In-memory storage for sensitive data (not persisted)
 class InMemoryStorage {
-  private storage = new Map<string, any>();
+  private storage = new Map<string, unknown>();
 
   get<T>(key: string, defaultValue: T | null = null): T | null {
-    return this.storage.has(key) ? this.storage.get(key) : defaultValue;
+    return this.storage.has(key) ? (this.storage.get(key) as T) : defaultValue;
   }
 
   set<T>(key: string, value: T): void {
@@ -42,7 +42,7 @@ class StorageWrapper {
     try {
       const item = window.localStorage.getItem(this.prefix + key);
       return item ? (JSON.parse(item) as T) : defaultValue;
-    } catch (error) {
+    } catch {
       return defaultValue;
     }
   }
@@ -59,7 +59,7 @@ class StorageWrapper {
     // Non-sensitive data can use localStorage
     try {
       window.localStorage.setItem(this.prefix + key, JSON.stringify(value));
-    } catch (error) {}
+    } catch {}
   }
 
   remove(key: string): void {
@@ -69,7 +69,7 @@ class StorageWrapper {
 
     try {
       window.localStorage.removeItem(this.prefix + key);
-    } catch (error) {}
+    } catch {}
   }
 
   clear(): void {
@@ -85,16 +85,16 @@ class StorageWrapper {
           window.localStorage.removeItem(key);
         }
       });
-    } catch (error) {}
+    } catch {}
   }
 
   private isSensitiveKey(key: string): boolean {
     // Keys that should never be persisted to localStorage
     const sensitiveKeys = [
-      'session_id',
-      'demographics',
-      'scanned_fingerprints',
-      'current_session_id'
+      "session_id",
+      "demographics",
+      "scanned_fingerprints",
+      "current_session_id",
     ];
     return sensitiveKeys.includes(key);
   }

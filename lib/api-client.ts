@@ -12,6 +12,14 @@ import {
   logError,
 } from "./errors";
 
+type APIErrorPayload = {
+  message?: string;
+  [key: string]: unknown;
+};
+
+const getAPIErrorPayload = (data: unknown): APIErrorPayload =>
+  typeof data === "object" && data !== null ? (data as APIErrorPayload) : {};
+
 const apiClient = axios.create({
   baseURL: env.NEXT_PUBLIC_API_URL,
   timeout: API_CONFIG.TIMEOUT,
@@ -48,8 +56,15 @@ apiClient.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
+    if (error.code === "ECONNABORTED" || error.message?.toLowerCase().includes("timeout")) {
+      const timeoutMs = error.config?.timeout ?? API_CONFIG.TIMEOUT;
+      logError(error, "API Timeout");
+      throw new TimeoutError(`Request timed out after ${timeoutMs}ms`);
+    }
+
     if (error.response) {
       const { status, data } = error.response;
+      const payload = getAPIErrorPayload(data);
 
       logError(error, `API Error ${status}`);
 
@@ -58,18 +73,18 @@ apiClient.interceptors.response.use(
           if (typeof window !== "undefined") {
             localStorage.removeItem("auth_token");
           }
-          throw new UnauthorizedError((data as any)?.message || "Unauthorized access");
+          throw new UnauthorizedError(payload.message || "Unauthorized access");
 
         case HTTP_STATUS.FORBIDDEN:
-          throw new ForbiddenError((data as any)?.message || "Access forbidden");
+          throw new ForbiddenError(payload.message || "Access forbidden");
 
         case HTTP_STATUS.NOT_FOUND:
-          throw new NotFoundError((data as any)?.message || "Resource not found");
+          throw new NotFoundError(payload.message || "Resource not found");
 
         case HTTP_STATUS.TOO_MANY_REQUESTS:
           const retryAfter = error.response.headers["retry-after"];
           throw new RateLimitError(
-            (data as any)?.message || "Too many requests",
+            payload.message || "Too many requests",
             retryAfter ? parseInt(retryAfter) : undefined
           );
 
@@ -77,11 +92,7 @@ apiClient.interceptors.response.use(
           throw new TimeoutError("Request timed out");
 
         default:
-          throw new APIError(
-            (data as any)?.message || "API request failed",
-            status,
-            data
-          );
+          throw new APIError(payload.message || "API request failed", status, data);
       }
     } else if (error.request) {
       logError(error, "Network Error");
@@ -129,19 +140,28 @@ async function retryRequest<T>(
 }
 
 export const api = {
-  get: <T = any>(url: string, config?: AxiosRequestConfig) =>
+  get: <T = unknown>(url: string, config?: AxiosRequestConfig) =>
     retryRequest(() => apiClient.get<T>(url, config)),
 
-  post: <T = any>(url: string, data?: any, config?: AxiosRequestConfig) =>
-    retryRequest(() => apiClient.post<T>(url, data, config)),
+  post: <T = unknown, D = unknown>(
+    url: string,
+    data?: D,
+    config?: AxiosRequestConfig
+  ) => retryRequest(() => apiClient.post<T>(url, data, config)),
 
-  put: <T = any>(url: string, data?: any, config?: AxiosRequestConfig) =>
-    retryRequest(() => apiClient.put<T>(url, data, config)),
+  put: <T = unknown, D = unknown>(
+    url: string,
+    data?: D,
+    config?: AxiosRequestConfig
+  ) => retryRequest(() => apiClient.put<T>(url, data, config)),
 
-  patch: <T = any>(url: string, data?: any, config?: AxiosRequestConfig) =>
-    retryRequest(() => apiClient.patch<T>(url, data, config)),
+  patch: <T = unknown, D = unknown>(
+    url: string,
+    data?: D,
+    config?: AxiosRequestConfig
+  ) => retryRequest(() => apiClient.patch<T>(url, data, config)),
 
-  delete: <T = any>(url: string, config?: AxiosRequestConfig) =>
+  delete: <T = unknown>(url: string, config?: AxiosRequestConfig) =>
     retryRequest(() => apiClient.delete<T>(url, config)),
 };
 

@@ -1,8 +1,14 @@
 import { api } from "./api-client";
-import { API_ENDPOINTS } from "./constants";
+import { API_CONFIG, API_ENDPOINTS } from "./constants";
+
+interface SessionStartResponse {
+  session_id?: string;
+  sessionId?: string;
+}
 
 export const sessionAPI = {
-  start: (consent: boolean) => api.post(API_ENDPOINTS.SESSION_START, { consent }),
+  start: (consent: boolean) =>
+    api.post<SessionStartResponse>(API_ENDPOINTS.SESSION_START, { consent }),
 
   submitDemographics: (
     sessionId: string,
@@ -27,15 +33,26 @@ export const sessionAPI = {
   updateConsent: (sessionId: string, consent: boolean) =>
     api.patch(`/session/${sessionId}/consent`, { consent }),
 
-  analyze: (sessionId: string) => api.post(API_ENDPOINTS.SESSION_ANALYZE(sessionId)),
+  analyze: (sessionId: string) =>
+    api.post(API_ENDPOINTS.SESSION_ANALYZE(sessionId), undefined, {
+      timeout: API_CONFIG.LONG_TIMEOUT,
+    }),
 
-  getResults: (sessionId: string) => api.get(API_ENDPOINTS.SESSION_RESULTS(sessionId)),
+  getResults: (sessionId: string) =>
+    api.get(API_ENDPOINTS.SESSION_RESULTS(sessionId), {
+      timeout: API_CONFIG.LONG_TIMEOUT,
+    }),
 
   generatePDF: (sessionId: string) =>
-    api.post(API_ENDPOINTS.SESSION_GENERATE_PDF(sessionId)),
+    api.post(API_ENDPOINTS.SESSION_GENERATE_PDF(sessionId), undefined, {
+      timeout: API_CONFIG.LONG_TIMEOUT,
+    }),
 
   downloadPDF: (sessionId: string) =>
-    api.get(API_ENDPOINTS.SESSION_GENERATE_PDF(sessionId), { responseType: "blob" }),
+    api.get(API_ENDPOINTS.SESSION_GENERATE_PDF(sessionId), {
+      responseType: "blob",
+      timeout: API_CONFIG.LONG_TIMEOUT,
+    }),
 };
 
 export interface AnalyzePatientRequest {

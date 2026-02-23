@@ -35,6 +35,10 @@ export default function ScanPage() {
   const router = useRouter();
   const { sessionId, setCurrentStep } = useSession();
   const [loading, setLoading] = useState(false);
+  const localUploadInputRef = useRef<HTMLInputElement | null>(null);
+  const localUploadShortcutEnabled =
+    process.env.NODE_ENV !== "production" ||
+    process.env.NEXT_PUBLIC_ENABLE_LOCAL_UPLOAD_SHORTCUT === "true";
 
   const [analysisOverlayOpen, setAnalysisOverlayOpen] = useState(false);
   const [analysisOverlayState, setAnalysisOverlayState] = useState<"loading" | "error">(
@@ -109,6 +113,23 @@ export default function ScanPage() {
     useBackNavigation(false);
   const [showResetConfirmModal, setShowResetConfirmModal] = useState(false);
 
+  const saveSessionResultPayload = (activeSessionId: string, payload: unknown) => {
+    const resultsData = {
+      data: payload,
+      expiry: Date.now() + 3600000,
+    };
+
+    const json = JSON.stringify(resultsData);
+    const utf8Bytes = new TextEncoder().encode(json);
+    let binary = "";
+    utf8Bytes.forEach((b) => {
+      binary += String.fromCharCode(b);
+    });
+    const encodedData = btoa(binary);
+    sessionStorage.setItem(activeSessionId, encodedData);
+    sessionStorage.setItem("current_session_id", activeSessionId);
+  };
+
   const handleSubmit = async () => {
     if (loading) return;
     setLoading(true);
@@ -152,32 +173,22 @@ export default function ScanPage() {
       await Promise.all(uploadPromises);
 
       const analyzeResponse = await sessionAPI.analyze(activeSessionId);
-
-      let finalData = analyzeResponse.data;
-      try {
-        const resultsResponse = await sessionAPI.getResults(activeSessionId);
-        finalData = resultsResponse.data;
-      } catch (resultsError) {}
-
-      const resultsData = {
-        data: finalData,
-        expiry: Date.now() + 3600000,
-      };
-
-      const json = JSON.stringify(resultsData);
-      const utf8Bytes = new TextEncoder().encode(json);
-      let binary = "";
-      utf8Bytes.forEach((b) => {
-        binary += String.fromCharCode(b);
-      });
-      const encodedData = btoa(binary);
-      sessionStorage.setItem(activeSessionId, encodedData);
-      sessionStorage.setItem("current_session_id", activeSessionId);
+      saveSessionResultPayload(activeSessionId, analyzeResponse.data);
       flushSync(() => {
         setCurrentStep(STEPS.RESULTS);
       });
       setAnalysisOverlayOpen(false);
       router.push(ROUTES.RESULTS);
+
+      // Do not block UI on post-processing (PDF/DB save). Refresh cached result when ready.
+      void sessionAPI
+        .getResults(activeSessionId)
+        .then((resultsResponse) => {
+          saveSessionResultPayload(activeSessionId, resultsResponse.data);
+        })
+        .catch(() => {
+          // Non-fatal: user already sees analysis results.
+        });
     } catch (err) {
       const message = getErrorMessage(err);
 
@@ -217,9 +228,63 @@ export default function ScanPage() {
     handleRescan();
   };
 
+  useEffect(() => {
+    if (!localUploadShortcutEnabled) return;
+
+    const handleLocalUploadShortcut = (event: KeyboardEvent) => {
+      const key = event.key.toLowerCase();
+      const isShortcut = (event.ctrlKey || event.metaKey) && key === "u";
+      if (!isShortcut) return;
+
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      if (!loading) {
+        localUploadInputRef.current?.click();
+      }
+    };
+
+    window.addEventListener("keydown", handleLocalUploadShortcut, true);
+    return () => {
+      window.removeEventListener("keydown", handleLocalUploadShortcut, true);
+    };
+  }, [loading, localUploadShortcutEnabled]);
+
   return (
     <ProtectedRoute requireSession={true} requiredStep={STEPS.SCAN}>
       <>
+        <input
+          ref={localUploadInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            event.target.value = "";
+            if (!file) return;
+            if (!file.type.startsWith("image/")) {
+              showErrorToast("Please select an image file.");
+              return;
+            }
+            if (!scanningStarted) {
+              setScanningStarted(true);
+            }
+            handleCapture(currentFinger, file);
+            setToastMessage(
+              `Uploaded ${FINGER_NAMES[currentFinger]} using local shortcut.`
+            );
+            setToastOpen(true);
+          }}
+        />
+
         <Toast
           open={toastOpen}
           message={toastMessage}

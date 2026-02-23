@@ -33,13 +33,13 @@ interface ScanComplete {
   scan_id: string;
   finger_name: string;
   image_b64_full: string;
-  metrics: any;
+  metrics: Record<string, unknown>;
 }
 
 const SCANNER_URL = process.env.NEXT_PUBLIC_SCANNER_BASE_URL || "http://localhost:5000";
 
 export function useScannerSocket() {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const socketRef = useRef<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [scannerStatus, setScannerStatus] = useState<ScannerStatus>({
     scan_id: null,
@@ -83,9 +83,10 @@ export function useScannerSocket() {
 
     newSocket.on("scan_started", () => undefined);
 
-    setSocket(newSocket);
+    socketRef.current = newSocket;
 
     return () => {
+      socketRef.current = null;
       newSocket.close();
     };
   }, []);
@@ -100,17 +101,27 @@ export function useScannerSocket() {
 
       fetch(`${SCANNER_URL}/api/scanner/progress`)
         .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
+        .then((data: unknown) => {
+          const payload = data as {
+            success?: boolean;
+            scan_id?: string | null;
+            finger_name?: string | null;
+            status?: ScannerStatus["status"];
+            hint?: string;
+            metrics?: ScannerStatus["metrics"];
+            last_preview_frame_b64?: string | null;
+          };
+
+          if (payload.success) {
             setScannerStatus({
-              scan_id: data.scan_id,
-              finger_name: data.finger_name,
-              status: data.status || "idle",
-              hint: data.hint || "",
-              metrics: data.metrics || {},
+              scan_id: payload.scan_id ?? null,
+              finger_name: payload.finger_name ?? null,
+              status: payload.status || "idle",
+              hint: payload.hint || "",
+              metrics: payload.metrics || {},
             });
-            if (data.last_preview_frame_b64) {
-              setPreviewFrame(data.last_preview_frame_b64);
+            if (payload.last_preview_frame_b64) {
+              setPreviewFrame(payload.last_preview_frame_b64);
             }
           }
         });
@@ -119,6 +130,7 @@ export function useScannerSocket() {
 
   const startScan = useCallback(
     (fingerName: FingerName) => {
+      const socket = socketRef.current;
       if (!socket || !isConnected) {
         return;
       }
@@ -128,18 +140,19 @@ export function useScannerSocket() {
 
       socket.emit("start_scan", { finger_name: fingerName });
     },
-    [socket, isConnected]
+    [isConnected]
   );
 
   const stopScan = useCallback(
     (scanId: string) => {
+      const socket = socketRef.current;
       if (!socket || !isConnected) {
         return;
       }
 
       socket.emit("stop_scan", { scan_id: scanId });
     },
-    [socket, isConnected]
+    [isConnected]
   );
 
   return {

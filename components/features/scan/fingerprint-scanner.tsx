@@ -29,14 +29,18 @@ export default function FingerprintScanner({
   const [retryAttempt, setRetryAttempt] = useState(0);
   const MAX_RETRIES = 3;
 
+  useEffect(() => {
+    onScannerReady?.();
+  }, [onScannerReady]);
+
   const startScanFlow = React.useCallback(() => {
     setPhase("scanning");
     setWaitCountdown(null);
     setError(null);
     setRetryAttempt(0);
-  }, [currentFinger]);
+  }, []);
 
-  const performScan = React.useCallback(async () => {
+  const performScan = React.useCallback(async function performScanImpl() {
     setPhase("scanning");
 
     try {
@@ -77,7 +81,7 @@ export default function FingerprintScanner({
 
           setPhase("idle");
           onScanComplete(currentFinger, file);
-        } catch (conversionError) {
+        } catch {
           setTimeout(() => startScanFlow(), 1000);
         }
       } else {
@@ -92,7 +96,7 @@ export default function FingerprintScanner({
           setRetryAttempt(nextAttempt);
 
           setTimeout(() => {
-            performScan();
+            void performScanImpl();
           }, 1500);
         } else {
           if (retryAttempt >= MAX_RETRIES) {
@@ -129,7 +133,9 @@ export default function FingerprintScanner({
       } else if (retryAttempt < MAX_RETRIES) {
         const nextAttempt = retryAttempt + 1;
         setRetryAttempt(nextAttempt);
-        setTimeout(() => performScan(), 1500);
+        setTimeout(() => {
+          void performScanImpl();
+        }, 1500);
       } else {
         setPhase("idle");
         setError({

@@ -40,14 +40,16 @@ export function RetakeConfirmModal({
           Retake Fingerprint?
         </h3>
         <p className="text-xl text-slate-600 mb-6 leading-relaxed max-w-sm mx-auto">
-          You're about to retake <span className="font-bold text-[#00c2cb]">{fingerName}</span>.
+          You&apos;re about to retake{" "}
+          <span className="font-bold text-[#00c2cb]">{fingerName}</span>.
         </p>
 
         <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl px-5 py-4 mb-8 w-full">
           <div className="flex items-start gap-3">
             <AlertCircle className="w-6 h-6 text-blue-600 shrink-0 mt-0.5" />
             <p className="text-lg text-blue-900 text-left leading-relaxed">
-              The current scan will be replaced. Make sure you're ready to rescan this finger.
+              The current scan will be replaced. Make sure you&apos;re ready to
+              rescan this finger.
             </p>
           </div>
         </div>

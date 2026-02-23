@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 type ScanPreviewProps = {
   file?: File | null;
@@ -8,21 +8,14 @@ type ScanPreviewProps = {
 };
 
 export function ScanPreview({ file, alt, className }: ScanPreviewProps) {
-  const [objectUrl, setObjectUrl] = useState<string | null>(null);
+  const objectUrl = useMemo(() => (file ? URL.createObjectURL(file) : null), [file]);
 
-  useEffect(() => {
-    if (!file) {
-      setObjectUrl(null);
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
-    setObjectUrl(url);
-
-    return () => {
-      URL.revokeObjectURL(url);
-    };
-  }, [file]);
+  useEffect(
+    () => () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    },
+    [objectUrl]
+  );
 
   if (!objectUrl) return null;
 

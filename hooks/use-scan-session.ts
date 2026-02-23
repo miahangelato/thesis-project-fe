@@ -53,7 +53,7 @@ export function useScanSession() {
           }
           return files;
         }
-      } catch (error) {}
+      } catch {}
       return {};
     }
   );
@@ -115,7 +115,7 @@ export function useScanSession() {
         }
 
         sessionStorage.setItem("scanned_fingerprints", JSON.stringify(data));
-      } catch (error) {}
+      } catch {}
     };
 
     if (Object.keys(fingerFiles).length > 0) {
@@ -134,11 +134,6 @@ export function useScanSession() {
   useEffect(() => {
     // Check if we should ignore
     if (countdown === null || paused) return;
-
-    if (countdown === 0) {
-      setCountdown(null);
-      return;
-    }
 
     const timer = setInterval(() => {
       setCountdown((prev) => {
