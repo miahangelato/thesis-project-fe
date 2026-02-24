@@ -1,5 +1,7 @@
 export interface DiabetesResult {
   diabetes_risk?: string;
+  risk_level?: string;
+  risk_score?: number;
   confidence?: number;
 }
 

@@ -18,14 +18,19 @@ export function ResultsSidebar({
   participantData: ResultsParticipantData;
   demographics: StoredDemographics | null;
 }) {
+  const riskLevel = result?.risk_level || result?.diabetes_risk || "Unknown";
+  const normalizedRisk = riskLevel.toLowerCase();
+  const isHighRisk = normalizedRisk.includes("high") || normalizedRisk.includes("diabetic");
+  const hasRiskScore = typeof result?.risk_score === "number";
+  const hasDiabetesConfidence = typeof result?.confidence === "number";
+
   return (
     <div className="col-span-4 flex flex-col h-full min-h-0 self-start">
       <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 p-5 h-full flex flex-col overflow-hidden">
         <div className="flex flex-col mb-6 gap-3 justify-center items-stretch text-sm leading-tight">
           <div
             className={`flex-1 min-w-0 border rounded-xl p-4 shadow-lg ${
-              result?.diabetes_risk?.toLowerCase() === "diabetic" ||
-              result?.diabetes_risk?.toLowerCase() === "high"
+              isHighRisk
                 ? "bg-linear-to-br from-red-50 to-pink-50 border-red-200"
                 : "bg-linear-to-br from-green-50 to-emerald-50 border-green-200"
             }`}
@@ -33,8 +38,7 @@ export function ResultsSidebar({
             <div className="flex items-center mb-2.5">
               <div
                 className={`w-12 h-12 rounded-xl flex items-center justify-center mr-3 ${
-                  result?.diabetes_risk?.toLowerCase() === "diabetic" ||
-                  result?.diabetes_risk?.toLowerCase() === "high"
+                  isHighRisk
                     ? "bg-red-500"
                     : "bg-green-500"
                 }`}
@@ -44,8 +48,7 @@ export function ResultsSidebar({
               <div className="min-w-0">
                 <p
                   className={`text-2xl font-bold mb-1 ${
-                    result?.diabetes_risk?.toLowerCase() === "diabetic" ||
-                    result?.diabetes_risk?.toLowerCase() === "high"
+                    isHighRisk
                       ? "text-red-700"
                       : "text-green-700"
                   }`}
@@ -54,38 +57,37 @@ export function ResultsSidebar({
                 </p>
                 <p
                   className={`text-5xl font-bold truncate ${
-                    result?.diabetes_risk?.toLowerCase() === "diabetic" ||
-                    result?.diabetes_risk?.toLowerCase() === "high"
+                    isHighRisk
                       ? "text-red-900"
                       : "text-green-900"
                   }`}
                 >
-                  {result?.diabetes_risk || "Unknown"}
+                  {riskLevel}
                 </p>
               </div>
             </div>
-            {result?.confidence && (
+            {(hasRiskScore || hasDiabetesConfidence) && (
               <div
                 className={`mt-3 pt-3 border-t ${
-                  result?.diabetes_risk?.toLowerCase() === "diabetic" ||
-                  result?.diabetes_risk?.toLowerCase() === "high"
+                  isHighRisk
                     ? "border-red-200"
                     : "border-green-200"
                 }`}
               >
-                <p
-                  className={`text-2xl ${
-                    result?.diabetes_risk?.toLowerCase() === "diabetic" ||
-                    result?.diabetes_risk?.toLowerCase() === "high"
-                      ? "text-red-600"
-                      : "text-green-600"
-                  }`}
-                >
-                  Confidence Level:{" "}
-                  <span className="font-bold text-xl">
-                    {(result.confidence * 100).toFixed(1)}%
-                  </span>
-                </p>
+                {hasRiskScore && (
+                  <p className={`text-2xl ${isHighRisk ? "text-red-600" : "text-green-600"}`}>
+                    Risk Score:{" "}
+                    <span className="font-bold text-xl">{result.risk_score!.toFixed(1)}%</span>
+                  </p>
+                )}
+                {hasDiabetesConfidence && (
+                  <p className={`text-2xl ${isHighRisk ? "text-red-600" : "text-green-600"}`}>
+                    Confidence Level:{" "}
+                    <span className="font-bold text-xl">
+                      {(result.confidence! * 100).toFixed(1)}%
+                    </span>
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -104,7 +106,7 @@ export function ResultsSidebar({
                 </p>
               </div>
             </div>
-            {bloodGroupResult?.confidence && (
+            {typeof bloodGroupResult?.confidence === "number" && (
               <div className="mt-3 pt-3 border-t border-blue-200">
                 <p className="text-2xl text-blue-600">
                   Confidence Level:{" "}

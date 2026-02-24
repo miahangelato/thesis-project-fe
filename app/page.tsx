@@ -86,6 +86,7 @@ export default function LandingPage() {
     if (isSubmittingConsent) return;
 
     setIsSubmittingConsent(true);
+    let shouldResetSubmitting = true;
 
     try {
       if (!sessionId) {
@@ -97,6 +98,7 @@ export default function LandingPage() {
 
       setCurrentStep(STEPS.DEMOGRAPHICS);
       setShowConsentModal(false);
+      shouldResetSubmitting = false;
       router.push(ROUTES.DEMOGRAPHICS);
     } catch (error: unknown) {
       const status =
@@ -112,7 +114,9 @@ export default function LandingPage() {
         console.error("[SESSION] Error updating consent:", error);
       }
     } finally {
-      setIsSubmittingConsent(false);
+      if (shouldResetSubmitting) {
+        setIsSubmittingConsent(false);
+      }
     }
   };
 

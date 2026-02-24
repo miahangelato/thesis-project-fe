@@ -114,12 +114,8 @@ export default function DemographicsPage() {
     }
 
     setLoading(true);
-    const start = Date.now();
-    const ensureMinDelay = async (minMs: number) => {
-      const elapsed = Date.now() - start;
-      if (elapsed < minMs) {
-        await new Promise((res) => setTimeout(res, minMs - elapsed));
-      }
+    const navigateToScan = () => {
+      router.push(ROUTES.SCAN);
     };
 
     try {
@@ -146,15 +142,10 @@ export default function DemographicsPage() {
         );
       }
 
-      await ensureMinDelay(5000);
-
-      router.push(ROUTES.SCAN);
-    } catch (err) {
+      navigateToScan();
+    } catch {
       setCurrentStep(STEPS.SCAN);
-      await ensureMinDelay(5000);
-      router.push(ROUTES.SCAN);
-    } finally {
-      setLoading(false);
+      navigateToScan();
     }
   };
 

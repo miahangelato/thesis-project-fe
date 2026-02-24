@@ -59,20 +59,6 @@ export default function ScanPage() {
     };
   }, []);
 
-  useEffect(() => {
-    try {
-      const flag = sessionStorage.getItem("show_initial_analysis_overlay");
-      if (flag) {
-        sessionStorage.removeItem("show_initial_analysis_overlay");
-        setAnalysisOverlayOpen(true);
-        setAnalysisOverlayState("loading");
-        overlayTimeoutRef.current = window.setTimeout(() => {
-          setAnalysisOverlayOpen(false);
-        }, 1500);
-      }
-    } catch (e) {}
-  }, []);
-
   const showErrorToast = (message: string) => {
     setToastMessage(message);
     setToastOpen(true);
@@ -136,6 +122,8 @@ export default function ScanPage() {
     setAnalysisOverlayOpen(true);
     setAnalysisOverlayState("loading");
     setAnalysisOverlayError(undefined);
+    let shouldResetLoading = true;
+
     try {
       const activeSessionId = sessionId || sessionStorage.getItem("current_session_id");
 
@@ -150,22 +138,29 @@ export default function ScanPage() {
         return;
       }
 
-      const readFileAsDataUrl = (file: File, finger: string) =>
-        new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve((reader.result as string) || "");
-          reader.onerror = () => reject(new Error(`Failed to read file for ${finger}`));
-          reader.readAsDataURL(file);
-        });
+      const fingerprintPayloads = await Promise.all(
+        Object.entries(fingerFiles).map(async ([finger, file]) => {
+          return new Promise<{ finger_name: string; image: string }>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const base64 = reader.result as string;
+              resolve({ finger_name: finger, image: base64 });
+            };
+            reader.onerror = () => reject(new Error(`Failed to read file for ${finger}`));
+            reader.readAsDataURL(file);
+          });
+        })
+      );
 
-      // Keep uploads sequential so a single backend worker is not overloaded.
-      for (const [finger, file] of Object.entries(fingerFiles)) {
-        if (!file) continue;
-        const base64 = await readFileAsDataUrl(file, finger);
-        await sessionAPI.submitFingerprint(activeSessionId, {
-          finger_name: finger,
-          image: base64,
+      try {
+        await sessionAPI.submitFingerprintBatch(activeSessionId, {
+          fingerprints: fingerprintPayloads,
         });
+      } catch {
+        const uploadPromises = fingerprintPayloads.map((payload) =>
+          sessionAPI.submitFingerprint(activeSessionId, payload)
+        );
+        await Promise.all(uploadPromises);
       }
 
       const analyzeResponse = await sessionAPI.analyze(activeSessionId);
@@ -173,18 +168,8 @@ export default function ScanPage() {
       flushSync(() => {
         setCurrentStep(STEPS.RESULTS);
       });
-      setAnalysisOverlayOpen(false);
+      shouldResetLoading = false;
       router.push(ROUTES.RESULTS);
-
-      // Do not block UI on post-processing (PDF/DB save). Refresh cached result when ready.
-      void sessionAPI
-        .getResults(activeSessionId)
-        .then((resultsResponse) => {
-          saveSessionResultPayload(activeSessionId, resultsResponse.data);
-        })
-        .catch(() => {
-          // Non-fatal: user already sees analysis results.
-        });
     } catch (err) {
       const message = getErrorMessage(err);
 
@@ -196,7 +181,9 @@ export default function ScanPage() {
         showErrorToast("Analyzing fingerprints failed. Please try submitting again.");
       }, 1400);
     } finally {
-      setLoading(false);
+      if (shouldResetLoading) {
+        setLoading(false);
+      }
     }
   };
 

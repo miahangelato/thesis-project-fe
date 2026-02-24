@@ -32,6 +32,17 @@ export const sessionAPI = {
     api.post(API_ENDPOINTS.SESSION_FINGERPRINT(sessionId), data, {
       timeout: API_CONFIG.LONG_TIMEOUT,
     }),
+  submitFingerprintBatch: (
+    sessionId: string,
+    data: {
+      fingerprints: Array<{
+        finger_name: string;
+        image: string;
+      }>;
+    }
+  ) => api.post(API_ENDPOINTS.SESSION_FINGERPRINT_BATCH(sessionId), data, {
+    timeout: API_CONFIG.LONG_TIMEOUT,
+  }),
 
   updateConsent: (sessionId: string, consent: boolean) =>
     api.patch(`/session/${sessionId}/consent`, { consent }),

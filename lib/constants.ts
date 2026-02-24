@@ -26,6 +26,8 @@ export const API_ENDPOINTS = {
   SESSION_START: "/session/start",
   SESSION_DEMOGRAPHICS: (sessionId: string) => `/session/${sessionId}/demographics`,
   SESSION_FINGERPRINT: (sessionId: string) => `/session/${sessionId}/fingerprint`,
+  SESSION_FINGERPRINT_BATCH: (sessionId: string) =>
+    `/session/${sessionId}/fingerprints/batch`,
   SESSION_ANALYZE: (sessionId: string) => `/session/${sessionId}/analyze`,
   SESSION_RESULTS: (sessionId: string) => `/session/${sessionId}/results`,
   SESSION_GENERATE_PDF: (sessionId: string) => `/session/${sessionId}/generate-pdf`,
